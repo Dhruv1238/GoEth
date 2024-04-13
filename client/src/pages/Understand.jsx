@@ -9,7 +9,7 @@ function Understand() {
             <div className='w-[45vh] h-[100vh] bg-white relative overflow-scroll' >
                 <div className='flex flex-col p-8 gap-4' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     <div>
-                        <Link to="/home">
+                        <Link to="/profile">
                             <Button className="flex p-2 w-10 h-10 bg-black rounded-xl curson-pointer justify-center items-center cursor-pointer ">
                                 <p className='text-white'>X</p>
                             </Button>

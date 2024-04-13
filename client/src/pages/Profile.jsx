@@ -46,7 +46,10 @@ function Profile() {
                                 <span className='font-thin text-lg text-gray-500 '>{userInfo.email}</span>
                             </div>
                             <p className='font-thin text-lg text-gray-500 '>{userInfo.phoneNumber}</p>
-
+                            <p>Stars: 5</p>
+                            <Link to="/understand">
+                            <p className='text-xs text-gray-400'>Understand Rating</p>
+                            </Link>
                         </div>
                         <div >
                             <img src={userInfo.img} className='w-20 h-20 p-1 rounded-full border border-1 border-black' alt="" />
