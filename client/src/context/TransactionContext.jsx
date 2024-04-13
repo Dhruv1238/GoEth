@@ -15,6 +15,7 @@ export const TransactionContextProvider = ({ children }) => {
     const [signer, setSigner] = useState(null);
     const [requestedRides, setRequestedRides] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [bids, setBids] = useState([]);
 
     const connectWallet = async () => {
         if (!window.ethereum) {
@@ -157,8 +158,96 @@ export const TransactionContextProvider = ({ children }) => {
         }
     }
 
+    const placeBid = async (requestId, bidAmountInRupees) => {
+        setIsLoading(true);
+        try {
+            // Fetch the current exchange rate from a cryptocurrency exchange API
+            const exchangeRate = 268873.65; // Replace this with the actual exchange rate
+
+            // Convert rupees to ether
+            const bidAmountEther = Number((bidAmountInRupees / exchangeRate).toFixed(18));
+
+            // Convert ether to wei
+            const bidAmountWei = ethers.utils.parseEther(bidAmountEther.toString());
+
+            // Create the contract instance
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            // Send the transaction
+            const transactionResponse = await contract.placeBid(requestId, bidAmountWei);
+
+            // Wait for the transaction to be mined
+            const transactionReceipt = await transactionResponse.wait();
+
+            console.log('Transaction receipt:', transactionReceipt);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to send transaction:', error);
+            setIsLoading(false);
+        }
+    };
+
+    // const getBid = async (param1, param2) => {
+    //     setIsLoading(true);
+    //     try {
+    //         // Create the contract instance
+    //         const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    //         // Call the function
+    //         const bid = await contract.bids(param1, param2);
+
+    //         console.log('Bid:', bid);
+    //         setIsLoading(false);
+    //     } catch (error) {
+    //         console.error('Failed to get bid:', error);
+    //         setIsLoading(false);
+    //     }
+    // };
+
+    const getBids = async (requestId) => {
+        setIsLoading(true);
+        try {
+            // Create the contract instance
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            // Call the function
+            const bids = await contract.getBids(requestId);
+
+            setBids(bids);
+
+            console.log('Bids:', bids);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to get bids:', error);
+            setIsLoading(false);
+        }
+    };
+
+    const acceptBid = async (requestId, bidId) => {
+        setIsLoading(true);
+        try {
+            // Create the contract instance
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            // Send the transaction
+            // Send the transaction with a specific gas limit
+            const transactionResponse = await contract.acceptBid(requestId, bidId, {
+                gasLimit: ethers.utils.hexlify(1000000), // 1,000,000 gas units
+            });
+
+            // Wait for the transaction to be mined
+            const transactionReceipt = await transactionResponse.wait();
+
+            console.log('Transaction receipt:', transactionReceipt);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to send transaction:', error);
+            setIsLoading(false);
+        }
+    };
+
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getRideRequest, getAllRideRequests, isLoading, requestedRides }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid }}>
             {children}
         </TransactionContext.Provider>
     );
