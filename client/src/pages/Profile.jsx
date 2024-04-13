@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@material-tailwind/react'
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import authCheck from '../components/AuthCheck';
 
 function Profile() {
 
@@ -12,13 +13,12 @@ function Profile() {
 
     const [userInfo, setUserInfo] = useState({
         name: user!=null? user.displayName : "Please Sign In",
-        lastName: 'Goenka',
-        phoneNumber: '9912245690',
-        email: 'PrGoenka12@gmail.com',
+        phoneNumber: "9874563218",
+        email: user?.email,
         address: '',
         TypeOfUser: 'Driver',
         // isEditingAddress: false,
-        img: 'tt2.svg'
+        img: user?.photoURL
     });
 
 
@@ -40,7 +40,6 @@ function Profile() {
                         <div className='flex flex-col  '>
                             <div className='flex flex-row gap-2 text-2xl font-medium'>
                                 <p>{userInfo.name}</p>
-                                <p>{userInfo.lastName}</p>
                             </div>
                             <div>
                                 <span className='font-thin text-lg text-gray-500 '>{userInfo.email}</span>
@@ -73,4 +72,4 @@ function Profile() {
     )
 }
 
-export default Profile
+export default authCheck(Profile)
