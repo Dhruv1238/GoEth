@@ -36,8 +36,11 @@ export const AuthContextProvider = ({ children }) => {
             setUser(JSON.parse(localStorage.getItem('user')));
 
             // Get a reference to the user's document
-            const userDocRef = doc(db, 'users', result.user.email);
-
+            if (userType === 'user') {
+                const userDocRef = doc(db, 'users', result.user.email);
+            }else if (userType === 'driver') {
+                const userDocRef = doc(db, 'Drivers', result.user.email);
+            }
 
             // Try to get the user's document
             const userDocSnap = await getDoc(userDocRef);

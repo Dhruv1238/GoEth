@@ -236,7 +236,7 @@ function Home() {
 
                         <div className='flex flex-col h-full justify-between overflow-hidden p-8  '>
                             <div className='flex flex-col gap-4'>
-                                <div className='flex flex-row justify-between z-10'>
+                                <div className='flex flex-row justify-between z-10 pointer-events-auto'>
 
                                     <div className='flex flex-row gap-3'>
 

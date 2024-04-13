@@ -9,13 +9,23 @@ import {
     doc,
     updateDoc,
   } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { query, where } from 'firebase/firestore';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
   
 function DriverSide() {
-    const [dName, setDName] = useState('');
+
+    const { user } = useContext(AuthContext);
+
+    const [dName, setDName] = useState(user.displayName);
     const [dPhoneNumber, setDPhoneNumber] = useState('');
-    const [dEmail, setDEmail] = useState('');
+    const [dEmail, setDEmail] = useState(user.email);
     const [dCarType, setDCarType] = useState('');
     const hvalue = collection(db, "Drivers");
+
+    const navigate = useNavigate();
 
     const handleCreate = async () => {
         try {
@@ -26,12 +36,23 @@ function DriverSide() {
             carType: dCarType,
           });
           console.log("Document successfully created");
+            navigate('/driverhome');
         } catch (error) {
           console.error("Error creating document:", error);
         }
       };
-    
 
+        useEffect(() => {
+            const checkDriverData = async () => {
+                const q = query(hvalue, where('email', '==', user.email));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    navigate('/driverhome');
+                }
+            };
+
+            checkDriverData();
+        }, [dEmail]);
 
     return (
         <>

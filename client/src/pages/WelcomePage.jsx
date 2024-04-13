@@ -7,16 +7,30 @@ import { Link } from 'react-router-dom';
 
 function WelcomePage() {
 
-    const { handleGoogleSignIn, user } = useContext(AuthContext);
+    const { handleGoogleSignIn, user, userType, setUserType } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
             console.log(user);
-            navigate('/home');
+            if (userType === 'user') {
+                navigate('/home');
+            } else if (userType === 'driver') {
+                navigate('/driverinfo');
+            }
         }
     }, [user])
+
+    const handleUser = async () => {
+        setUserType('user');
+        handleGoogleSignIn();
+    }
+
+    const handleDriver = async () => {
+        setUserType('driver');
+        handleGoogleSignIn();
+    }
 
 
     return (
@@ -34,9 +48,8 @@ function WelcomePage() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-4 pl-4 pr-4 '>
-                        <Link to="/driver">
-                            <Button className=' w-full rounded-lg p-4 bg-black text-white'>Login As a Driver</Button></Link>
-                        <Button onClick={handleGoogleSignIn} className='w-full rounded-lg p-4 bg-transparent border-2 border-black text-black' >Login as a Customer</Button>
+                        <Button className=' rounded-lg p-4 bg-black text-white' onClick={handleDriver}>Login As a Driver</Button>
+                        <Button onClick={handleUser} className='w-full rounded-lg p-4 bg-transparent border-2 border-black text-black' >Login as a Customer</Button>
                     </div>
                 </div>
             </div>
