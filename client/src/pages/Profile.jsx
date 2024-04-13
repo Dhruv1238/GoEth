@@ -12,13 +12,14 @@ function Profile() {
 
 
     const [userInfo, setUserInfo] = useState({
-        name: user!=null? user.displayName : "Please Sign In",
+        name: user != null ? user.displayName : "Please Sign In",
         phoneNumber: "9874563218",
         email: user?.email,
         address: '',
         TypeOfUser: 'Driver',
         // isEditingAddress: false,
-        img: user?.photoURL
+        img: user?.photoURL,
+        CO2: '0'
     });
 
 
@@ -51,6 +52,11 @@ function Profile() {
                             <img src={userInfo.img} className='w-20 h-20 p-1 rounded-full border border-1 border-black' alt="" />
                         </div>
                     </div>
+                    <div className='flex flex-row p-4 mx-auto justify-between w-4/5 border border-1 rounded-xl'>
+                            <p>Estimated CO2 saved</p>
+                            
+                            <p>{userInfo.CO2} G</p>
+                    </div>
                     <div className='max-w-2xl mx-auto relative'>
                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your Address</label>
                         <div className="flex flex-col gap-2 text-lg">
@@ -61,7 +67,7 @@ function Profile() {
                         </div>
                     </div>
                     <div className='mt-12 flex items-center justify-center'>
-                            <img src="tt3.svg" className='w-70 h-70' alt="" />
+                        <img src="tt3.svg" className='w-70 h-70' alt="" />
                     </div>
                     <div className='absolute bottom-0 w-full'>
                         <Navbar />
