@@ -18,10 +18,11 @@ function WelcomePage() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-4 pl-4 pr-4 '>
+                            <Button className=' rounded-lg p-4 bg-black text-white'>Login As a Driver</Button>
                         <Link to="/home">
-                            <Button className='w-full rounded-lg p-4 bg-black text-white'>Create An Account</Button>
+
+                        <Button className='w-full rounded-lg p-4 bg-transparent border border-2 border-black text-black' >Login as a Customer</Button>
                         </Link>
-                        <Button className='rounded-lg p-4 bg-transparent border border-2 border-black text-black' >Login to Account</Button>
 
                     </div>
                 </div>
