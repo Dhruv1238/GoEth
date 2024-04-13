@@ -12,18 +12,25 @@ function Home() {
     const [destination, setDestination] = useState('');
     // const [sourceChange, setSourceChange] = useState(false);
     // const [destinationChange, setDestinationChange] = useState(false);
+    const [sourceCoordinates, setSourceCoordinates] = useState([]);
+    const [destinationCoordinates, setDestinationCoordinates] = useState([]);
     const [sourceList, setSourceList] = useState([]);
     const [destinationList, setDestinationList] = useState([]);
     const [userLocation, setUserLocation] = useState();
     const [showSourceDropdown, setShowSourceDropdown] = useState(false);
     const [showDestinationDropdown, setShowDestinationDropdown] = useState(false);
+    const [sourceLat, setSourceLat] = useState();
+    const [sourceLng, setSourceLng] = useState();
+    const [destinationLat, setDestinationLat] = useState();
+    const [destinationLng, setDestinationLng] = useState();
 
     const API_KEY = import.meta.env.VITE_APP_MAPBOX_ACCESS_KEY;
     const PUBLIC_KEY = import.meta.env.VITE_APP_MAPBOX_PUBLIC_KEY;
+    const SESSION_TOKEN = '025067ec-efa6-47c1-88ed-5edc75f0d552';
 
     const getAddressList = async (query, setList) => {
         if (!query) return; // Prevents fetching when query is empty
-        const req = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${query}&language=en&session_token=025067ec-efa6-47c1-88ed-5edc75f0d552&access_token=${API_KEY}`, {
+        const req = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${query}&language=en&session_token=${SESSION_TOKEN}&access_token=${API_KEY}&country=in`, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -74,10 +81,81 @@ function Home() {
         setTimeout(() => setShowDropdown(false), 200);
     };
 
-    const handleSelectOption = (setInput, setList, option) => {
-        setInput(option);
-        setList([]);
-    };
+const handleSelectOptionSource = (setInput, setList, option, item) => {
+    setInput(option);
+    setList([]);
+    fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
+    .then(req => req.json())
+    .then(result => {
+        console.log('Selected Source: ', result);
+        setSourceLat(result.features[0].properties.coordinates.latitude);
+        setSourceLng(result.features[0].properties.coordinates.longitude);
+    });
+};
+console.log('Source Latitude: ', sourceLat);
+console.log('Source Longitude: ', sourceLng);
+
+const handleSelectOptionDestination = (setInput, setList, option, item) => {
+    setInput(option);
+    setList([]);
+    fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
+    .then(req => req.json())
+    .then(result => {
+        console.log('Selected Destination: ', result);
+        setDestinationLat(result.features[0].properties.coordinates.latitude);
+        setDestinationLng(result.features[0].properties.coordinates.longitude);
+    });
+};
+console.log('Destination Latitude: ', destinationLat);
+console.log('Destination Longitude: ', destinationLng);
+    // useEffect(() => {
+    //     console.log('Source Coordinates: ', sourceCoordinates);
+    // }, [sourceCoordinates]);
+    
+    // useEffect(() => {
+    //     console.log('Destination Coordinates: ', destinationCoordinates);
+    // }, [destinationCoordinates]);
+    
+
+    // useEffect(() => {
+    //     mapboxgl.accessToken = PUBLIC_KEY;
+    //     const map = new mapboxgl.Map({
+    //         container: 'map', // container id
+    //         style: 'mapbox://styles/mapbox/streets-v9', // style URL
+    //         center: [72.9005454139102, 19.072655410514404], // starting position [lng, lat]
+    //         zoom: 14 // starting zoom
+    //     });
+
+    //     // Add a marker at the user's location
+    //     if (userLocation) {
+    //         new mapboxgl.Marker()
+    //             .setLngLat([userLocation.longitude, userLocation.latitude])
+    //             .addTo(map);
+    //     }
+
+    //     if (sourceLat && sourceLng) {
+    //         new mapboxgl.Marker()
+    //             .setLngLat([sourceLat, sourceLng])
+    //             .color('red')
+    //             .addTo(map);
+    //             map.flyTo({
+    //                 center: [sourceLat, sourceLng],
+    //                 essential: true
+    //             })
+    //     }
+
+    //     if (destinationLat && destinationLng) {
+    //         new mapboxgl.Marker()
+    //             .setLngLat([destinationLat, destinationLng])
+    //             .addTo(map);
+    //             map.flyTo({
+    //                 center: [destinationLat, destinationLng],
+    //                 essential: true
+    //             })
+    //     }
+
+    //     return () => map.remove();
+    // }, [userLocation]);
 
     useEffect(() => {
         mapboxgl.accessToken = PUBLIC_KEY;
@@ -87,20 +165,55 @@ function Home() {
             center: [72.9005454139102, 19.072655410514404], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-
-        // Add a marker at the user's location
-        if (userLocation) {
-            new mapboxgl.Marker()
-                .setLngLat([userLocation.longitude, userLocation.latitude])
-                .addTo(map);
-        }
-
+    
+        // Function to update map and markers
+        const updateMapAndMarkers = () => {
+            // Remove existing markers
+            map.getSource('sourceMarker')?.setData({ type: 'FeatureCollection', features: [] });
+            map.getSource('destinationMarker')?.setData({ type: 'FeatureCollection', features: [] });
+    
+            // Add user location marker
+            if (userLocation) {
+                new mapboxgl.Marker()
+                    .setLngLat([userLocation.longitude, userLocation.latitude])
+                    .addTo(map);
+            }
+    
+            // Add source marker
+            if (sourceLat && sourceLng) {
+                new mapboxgl.Marker({ color: 'red' })
+                    .setLngLat([sourceLng, sourceLat])
+                    .addTo(map);
+                map.flyTo({
+                    center: [sourceLng, sourceLat],
+                    essential: true
+                });
+            }
+    
+            // Add destination marker
+            if (destinationLat && destinationLng) {
+                new mapboxgl.Marker()
+                    .setLngLat([destinationLng, destinationLat])
+                    .addTo(map);
+                map.flyTo({
+                    center: [destinationLng, destinationLat],
+                    essential: true
+                });
+            }
+        };
+    
+        // Call the function to update map and markers
+        updateMapAndMarkers();
+    
         return () => map.remove();
-    }, [userLocation]);
+    }, [userLocation, sourceLat, sourceLng, destinationLat, destinationLng]);
+
+    console.log('Source: ', source);
+    console.log('Destination: ', destination);
 
     return (
         <>
-            <div id="map" className="absolute top-0 w-[45vh] mx-auto h-full z-0 overflow-hidden"></div>
+            <div id="map" className="absolute top-0 w-full mx-auto h-full z-0 overflow-hidden"></div>
             <div className='relative z-10 pointer-events-none'>
                 <div className='w-[45vh] h-[100vh] relative overflow-scroll' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     <div className='flex flex-col h-full justify-between overflow-hidden p-8  '>
@@ -158,7 +271,7 @@ function Home() {
                                             {sourceList.map((item, index) => (
                                                 <div
                                                     key={index}
-                                                    onClick={() => handleSelectOption(setSource, setSourceList, item.name)}
+                                                    onClick={() => handleSelectOptionSource(setSource, setSourceList, item.name, item)}
                                                     className='p-2 hover:bg-gray-200 cursor-pointer'
                                                 >
                                                     {item.name}
@@ -186,7 +299,7 @@ function Home() {
                                             {destinationList.map((item, index) => (
                                                 <div
                                                     key={index}
-                                                    onClick={() => handleSelectOption(setDestination, setDestinationList, item.name)}
+                                                    onClick={() => handleSelectOptionDestination(setDestination, setDestinationList, item.name, item)}
                                                     className='p-2 hover:bg-gray-200 cursor-pointer'
                                                 >
                                                     {item.name}
