@@ -11,6 +11,7 @@ import Activity from './pages/Activity';
 import Understand from './pages/Understand';
 import DriverSide from './pages/DriverSide';
 import DriverHome from './pages/DriverHome';
+import CabBookings from './pages/CabBookings';
 
 const AppRouter = () => {
     return (
@@ -22,10 +23,12 @@ const AppRouter = () => {
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/rent" element={<RentalCars />} />
+
             <Route path="/activity" element={<Activity />} />
             <Route path="/understand" element={<Understand />} />
             <Route path="/driverInfo" element={<DriverSide />} />
             <Route path="/driverhome" element={<DriverHome />} />
+            <Route path="/book" element={<CabBookings />} />
 
 
         </Routes>

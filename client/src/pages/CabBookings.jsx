@@ -6,29 +6,35 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import authCheck from '../components/AuthCheck';
 
-function RentalCars() {
 
+function CabBookings() {
     const [cars, setCars] = useState([
         {
             timeToArrive: '10 mins',
             name: 'BMW Cabrio',
             distance: '5 km',
             img: 'https://t3.ftcdn.net/jpg/02/22/85/16/360_F_222851624_jfoMGbJxwRi5AWGdPgXKSABMnzCQo9RN.jpg',
-            driverName: 'Hamiz Parekh'
+            driverName: 'Hamiz Parekh',
+            AC: 'AC',
+            isElectric: true
         },
         {
             timeToArrive: '15 mins',
             name: 'Audi SUV',
             distance: '10 km',
             img: '',
-            driverName: 'Sarfaraz Shaikh'
+            driverName: 'Sarfaraz Shaikh',
+            AC: 'Non AC',
+            isElectric: false
         },
         {
             timeToArrive: '20 mins',
             name: 'Mercedes Sedan',
             distance: '15 km',
             img: '',
-            driverName: 'Dhruv Khan'
+            driverName: 'Dhruv Khan',
+            AC: 'Non AC',
+            isElectric: false
 
         },
         {
@@ -36,10 +42,13 @@ function RentalCars() {
             name: 'Mercedes Sedan',
             distance: '15 km',
             img: '',
-            driverName: 'Pratham choenka'
+            driverName: 'Pratham choenka',
+            AC: 'AC',
+            isElectric: true
 
         }
     ]);
+
     return (
         <>
             <div className='w-[45vh] h-[100vh] bg-white relative'>
@@ -60,18 +69,22 @@ function RentalCars() {
                         </div>
                         <div className='flex flex-col p-4 gap-4  h-[72vh] overflow-y-scroll ' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                             {cars.map((car, index) => (
-
                                 <div key={index} className='flex flex-col p-4 border border-2 border-black rounded-xl gap-2 '>
-                                    <div className='flex flex-row gap-4 items-center'>
-                                        <img src={car.img} className='w-8 h-8 border border-2 border-black rounded-full' alt="" />
-                                        <p className='text-base font-semibold'>{car.driverName}</p>
+                                    <div className='flex flex-row justify-between items-center'>
+                                        <div className='flex flex-row gap-4 items-center'>
+                                            <img src={car.img} className='w-8 h-8 border border-2 border-black rounded-full' alt="" />
+                                            <p className='text-base font-semibold'>{car.driverName}</p>
+                                        </div>
+                                        <div className='flex flex-col'>
+                                            <p className='text-xl font-medium'>₹152/-</p>
+                                        </div>
                                     </div>
 
                                     <div className='flex flex-row'>
                                         <div className='flex flex-col '>
                                             <p className='text-black'>{car.name}</p>
-                                            <div className='flex flex-row text-xs text-gray-400 gap-2'>
-                                                <p>Automatic</p> |
+                                            <div className='flex flex-row text-xs font-medium text-gray-700 gap-2'>
+                                                <p >{car.AC}</p> |
                                                 <p>3 Seats</p> |
                                                 <p>Octane</p> |
                                             </div>
@@ -89,11 +102,9 @@ function RentalCars() {
                                         <p className='text-gray-700'>{car.timeToArrive}</p>
                                         <p className='text-gray-700'>{car.distance}</p>
                                     </div>
-                                    <div className="flex flex-row gap-4">
-                                        <Button className='p-4 text-black bg-transparent border border-2 border-black w-full' >
-                                            Book Later
-                                        </Button>
-                                        <Button className='p-4 text-white bg-black w-full' >
+                                    <div className="flex flex-row ">
+
+                                        <Button className={`p-4 text-white ${car.isElectric ? 'bg-green-600' : 'bg-black'} w-full`} >
                                             Ride Now
                                         </Button>
                                     </div>
@@ -112,4 +123,4 @@ function RentalCars() {
     )
 }
 
-export default authCheck(RentalCars)
+export default CabBookings

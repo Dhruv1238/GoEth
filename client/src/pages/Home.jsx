@@ -252,7 +252,7 @@ function Home() {
                         </div>
                         <div className='flex flex-col mb-24 gap-4 pointer-events-auto'>
                             <div className="flex flex-row justify-between items-center">
-                                <Link to="/rent">
+                                <Link to="/book">
                                     <Button className='bg-black text-white p-4 pl-6 pr-6 '>
                                         Book a Cab
                                     </Button>
