@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Map from 'react-map-gl';
+import Map, { Marker } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MapSearch = () => {
     const [source, setSource] = useState('');
@@ -41,7 +42,7 @@ const MapSearch = () => {
     }, [destination]);
 
     const getUserLocation = () => {
-        navigator.geolocation.getCurrentPosition(function(pos) {
+        navigator.geolocation.getCurrentPosition(function (pos) {
             setUserLocation({
                 latitude: pos.coords.latitude,
                 longitude: pos.coords.longitude
@@ -51,6 +52,7 @@ const MapSearch = () => {
 
     useEffect(() => {
         getUserLocation();
+        console.log('User Location: ', userLocation);
     }, []);
 
     return (
@@ -61,7 +63,7 @@ const MapSearch = () => {
                     value={source}
                     onChange={(e) => setSource(e.target.value)}
                 />
-                <div className='text-white shadow-md absolute w-full rounded-md'>
+                <div className='text-white shadow-md w-full rounded-md'>
                     {addressList.map((item, index) => (
                         <div
                             key={index}
@@ -79,7 +81,7 @@ const MapSearch = () => {
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                 />
-                <div className='text-white shadow-md absolute w-full rounded-md'>
+                <div className='text-white shadow-md w-full rounded-md'>
                     {destinationList.map((item, index) => (
                         <div
                             key={index}
@@ -97,13 +99,20 @@ const MapSearch = () => {
                     <Map
                         mapboxAccessToken={PUBLIC_KEY}
                         initialViewState={{
-                            longitude: -122.4,
-                            latitude: 37.8,
+                            longitude: 72.9005454139102,
+                            latitude: 19.072655410514404,
                             zoom: 14
                         }}
-                        style={{ width: '100%', height: '100%'}}
+                        style={{ width: 600, height: 400 }}
                         mapStyle="mapbox://styles/mapbox/streets-v9"
-                    />
+                    >
+                        <Marker
+                            longitude={userLocation?.longitude || 72.9005454139102}
+                            latitude={userLocation?.latitude || 19.072655410514404}
+                        >
+                            <img src="./marker.png" />
+                        </Marker>
+                    </Map>
                 </div>
             </div>
         </>
