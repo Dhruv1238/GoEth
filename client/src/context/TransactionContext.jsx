@@ -15,20 +15,25 @@ export const TransactionContextProvider = ({ children }) => {
     const [signer, setSigner] = useState(null);
 
     const connectWallet = async () => {
-        // try {
-        if (!ethereum) {
+        if (!window.ethereum) {
             alert("Get MetaMask!");
             return;
         }
-        const accounts = await ethereum.request({
+
+        const accounts = await window.ethereum.request({
             method: "eth_requestAccounts",
         });
+
         console.log("Connected", accounts[0]);
         setCurrentAccount(accounts[0]);
-        // } catch (error) {
-        //     console.log(error);
-        //     alert("Error connecting to MetaMask");
-        // }
+
+        // Create the provider and signer
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        // Set the provider and signer in the state
+        setProvider(provider);
+        setSigner(signer);
     };
 
     useEffect(() => {
@@ -41,27 +46,71 @@ export const TransactionContextProvider = ({ children }) => {
     }
 
     // Function to sign the transaction
-    const signTransaction = async (location, destination, startingBid, amountToApprove) => {
+    const requestRide = async (location, destination, startingBid, amountToApprove) => {
         try {
-            // Get the contract address and ABI
-            const contractAddress = contractAddress;
-            const contractABI = contractABI;
+            // Convert ether to wei
+            const startingBidWei = ethers.utils.parseEther(startingBid.toString());
+            const amountToApproveWei = ethers.utils.parseEther(amountToApprove.toString());
 
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-            // Sign the transaction
-            const transaction = await contract.createRideRequest(location, destination, startingBid, amountToApprove);
-            const signedTransaction = await signer.sendTransaction(transaction);
+            // Send the transaction
+            const transactionResponse = await contract.createRideRequest(location, destination, startingBidWei, amountToApproveWei);
 
-            console.log('Signed transaction:', signedTransaction);
+            // Wait for the transaction to be mined
+            const transactionReceipt = await transactionResponse.wait();
+
+            console.log('Transaction receipt:', transactionReceipt);
         } catch (error) {
-            console.error('Failed to sign transaction:', error);
+            console.error('Failed to send transaction:', error);
         }
     };
 
+    const getRideRequest = async (requestId) => {
+        try {
+            // Create the contract instance
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            // Call the rideRequests function
+            const rideRequest = await contract.rideRequests(requestId);
+
+            console.log('Ride request:', rideRequest);
+        } catch (error) {
+            console.error('Failed to get ride request:', error);
+        }
+    };
+
+    const getAllRequestIds = async () => {
+    try {
+        // Create the contract instance
+        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        // Get the total number of ride requests
+        const totalRequests = await contract.rideRequestCount();
+
+        // Initialize an array to store the requestIds
+        let requestIds = [];
+
+        // Iterate over the range from 0 to totalRequests - 1
+        for (let i = 0; i < totalRequests; i++) {
+            // Call the rideRequests function with each index
+            const rideRequest = await contract.rideRequests(i);
+
+            console.log('Ride request:', rideRequest);
+
+            // Add the requestId to the array
+            requestIds.push(rideRequest.requestId);
+        }
+
+        console.log('Request Ids:', requestIds);
+    } catch (error) {
+        console.error('Failed to get request Ids:', error);
+    }
+};
+
     return (
-        <TransactionContext.Provider value={{ signTransaction, connectWallet }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getRideRequest, getAllRequestIds }}>
             {children}
         </TransactionContext.Provider>
     );
