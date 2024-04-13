@@ -7,6 +7,7 @@ import Wallet from './pages/Wallet';
 import Profile from './pages/Profile';
 import RentalCars from './pages/RentalCars';
 import MapSearch from './pages/MapSearch';
+import Activity from './pages/Activity';
 
 
 const AppRouter = () => {
@@ -19,6 +20,7 @@ const AppRouter = () => {
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/rent" element={<RentalCars />} />
+            <Route path="/activity" element={<Activity />} />
 
 
 
