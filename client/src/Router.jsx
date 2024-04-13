@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import RentalCars from './pages/RentalCars';
 import MapSearch from './pages/MapSearch';
 import Activity from './pages/Activity';
-
+import Understand from './pages/Understand';
 
 const AppRouter = () => {
     return (
@@ -21,6 +21,8 @@ const AppRouter = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/rent" element={<RentalCars />} />
             <Route path="/activity" element={<Activity />} />
+            <Route path="/understand" element={<Understand />} />
+
 
 
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import authCheck from '../components/AuthCheck';
 
 function Completion() {
     const [userName, setUserName] = useState('')
@@ -26,4 +27,4 @@ function Completion() {
     )
 }
 
-export default Completion
+export default authCheck(Completion)

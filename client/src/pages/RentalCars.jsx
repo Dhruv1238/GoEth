@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Home from './Home'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
+import authCheck from '../components/AuthCheck';
 
 function RentalCars() {
 
@@ -56,7 +57,7 @@ function RentalCars() {
                         <p className='text-2xl leading-tight font-medium'>Cars Available <span className=' text-green-600'>Live</span></p>
                         <p className='text-gray-500 leading-tight'>4 Cars Found</p>
                     </div>
-                    <div className='flex flex-col p-4 gap-4  h-[72vh] overflow-y-scroll 'style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    <div className='flex flex-col p-4 gap-4  h-[72vh] overflow-y-scroll ' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {cars.map((car, index) => (
 
                             <div key={index} className='flex flex-col p-4 border border-2 border-black rounded-xl gap-2 '>
@@ -109,4 +110,4 @@ function RentalCars() {
     )
 }
 
-export default RentalCars
+export default authCheck(RentalCars)

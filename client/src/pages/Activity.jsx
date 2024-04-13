@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-tailwind/react'
+import authCheck from '../components/AuthCheck';
 
 function Activity() {
 
@@ -64,4 +65,4 @@ function Activity() {
     )
 }
 
-export default Activity
+export default authCheck(Activity)
