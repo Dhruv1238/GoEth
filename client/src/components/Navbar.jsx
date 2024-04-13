@@ -28,12 +28,12 @@ function Navbar() {
               <span className="text-sm text-gray-900   group-hover:text-blue-500">Wallet</span>
             </button>
           </Link>
-          <Link to="/settings">
+          <Link to="/activity">
             <button type="button" className="inline-flex flex-col items-center justify-center px-5  group">
               <svg className="w-5 h-5 mb-2 text-gray-900   group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2" />
               </svg>
-              <span className="text-sm text-gray-900   group-hover:text-blue-500">Settings</span>
+              <span className="text-sm text-gray-900   group-hover:text-blue-500">Activity</span>
             </button>
           </Link>
           <Link to="/profile">
