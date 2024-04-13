@@ -13,6 +13,8 @@ export const TransactionContextProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState("");
     const [provider, setProvider] = useState(null);
     const [signer, setSigner] = useState(null);
+    const [requestedRides, setRequestedRides] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const connectWallet = async () => {
         if (!window.ethereum) {
@@ -46,11 +48,19 @@ export const TransactionContextProvider = ({ children }) => {
     }
 
     // Function to sign the transaction
-    const requestRide = async (location, destination, startingBid, amountToApprove) => {
+    const requestRide = async (location, destination, startingBidInRupees, amountToApproveInRupees) => {
+        setIsLoading(true);
         try {
+            // Fetch the current exchange rate from a cryptocurrency exchange API
+            const exchangeRate = 268873.65
+
+            // Convert rupees to ether
+            const startingBidEther = startingBidInRupees / exchangeRate;
+            const amountToApproveEther = amountToApproveInRupees / exchangeRate;
+
             // Convert ether to wei
-            const startingBidWei = ethers.utils.parseEther(startingBid.toString());
-            const amountToApproveWei = ethers.utils.parseEther(amountToApprove.toString());
+            const startingBidWei = ethers.utils.parseEther(startingBidEther.toString());
+            const amountToApproveWei = ethers.utils.parseEther(amountToApproveEther.toString());
 
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
@@ -62,12 +72,15 @@ export const TransactionContextProvider = ({ children }) => {
             const transactionReceipt = await transactionResponse.wait();
 
             console.log('Transaction receipt:', transactionReceipt);
+            setIsLoading(false);
         } catch (error) {
             console.error('Failed to send transaction:', error);
+            setIsLoading(false);
         }
     };
 
     const getRideRequest = async (requestId) => {
+
         try {
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
@@ -81,36 +94,71 @@ export const TransactionContextProvider = ({ children }) => {
         }
     };
 
-    const getAllRequestIds = async () => {
-    try {
-        // Create the contract instance
-        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    //     const getAllRequestIds = async () => {
+    //     try {
+    //         // Create the contract instance
+    //         const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        // Get the total number of ride requests
-        const totalRequests = await contract.rideRequestCount();
+    //         // Get the total number of ride requests
+    //         const totalRequests = await contract.rideRequestCount();
 
-        // Initialize an array to store the requestIds
-        let requestIds = [];
+    //         // Initialize an array to store the requestIds
+    //         let requestIds = [];
 
-        // Iterate over the range from 0 to totalRequests - 1
-        for (let i = 0; i < totalRequests; i++) {
-            // Call the rideRequests function with each index
-            const rideRequest = await contract.rideRequests(i);
+    //         // Iterate over the range from 0 to totalRequests - 1
+    //         for (let i = 0; i < totalRequests; i++) {
+    //             // Call the rideRequests function with each index
+    //             const rideRequest = await contract.rideRequests(i);
 
-            console.log('Ride request:', rideRequest);
+    //             console.log('Ride request:', rideRequest);
 
-            // Add the requestId to the array
-            requestIds.push(rideRequest.requestId);
+    //             // Add the requestId to the array
+    //             requestIds.push(rideRequest.requestId);
+    //         }
+
+    //         console.log('Request Ids:', requestIds.map(id => id.toNumber())) ;
+    //     } catch (error) {
+    //         console.error('Failed to get request Ids:', error);
+    //     }
+    // };
+
+    const getAllRideRequests = async () => {
+        setIsLoading(true);
+        try {
+            // Create the contract instance
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            // Get the total number of ride requests
+            const totalRequests = await contract.rideRequestCount();
+
+            // Initialize an array to store the ride requests
+            let rideRequests = [];
+
+            // Iterate over the range from 0 to totalRequests - 1
+            for (let i = 0; i < totalRequests; i++) {
+                // Call the rideRequests function with each index
+                const rideRequest = await contract.rideRequests(i);
+
+                console.log('Ride request:', rideRequest);
+
+                // Add the ride request to the array
+                if (rideRequest[5] === false) {
+                    rideRequests.push(rideRequest);
+                }
+            }
+
+            setRequestedRides(rideRequests);
+
+            console.log('Ride Requests:', rideRequests);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to get ride requests:', error);
+            setIsLoading(false);
         }
-
-        console.log('Request Ids:', requestIds);
-    } catch (error) {
-        console.error('Failed to get request Ids:', error);
     }
-};
 
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getRideRequest, getAllRequestIds }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getRideRequest, getAllRideRequests, isLoading, requestedRides }}>
             {children}
         </TransactionContext.Provider>
     );
