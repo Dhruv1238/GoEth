@@ -222,15 +222,11 @@ function Home() {
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-row justify-between'>
                                 <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                                    </svg>
+                                    
                                 </Button>
                                 <div className='flex flex-row gap-3'>
                                     <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                        </svg>
+                                        
                                     </Button>
                                     <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 transform rotate-12">
@@ -242,9 +238,9 @@ function Home() {
                             <div>
                                 {showPopup && (
                                     <div className='flex p-6 border border-1 bg-white rounded-lg '>
-                                        <div className=" flex flex-col">
-                                            <p>Time To Reach: {Math.ceil(journeyDetails.duration / 60)} minutes</p>
-                                            <p>Distance to destination: <span className='font-semibold'>{Math.ceil(journeyDetails.distance / 1000)}</span> km</p>
+                                        <div className=" flex flex-col gap-1">
+                                            <p className='leading-tight'>Time To Reach: {Math.ceil(journeyDetails.duration / 60)} minutes</p>
+                                            <p className='leading-tight'>Distance to destination: <span className='font-medium'>{Math.ceil(journeyDetails.distance / 1000)}</span> km</p>
                                         </div>
                                     </div>
                                 )}
