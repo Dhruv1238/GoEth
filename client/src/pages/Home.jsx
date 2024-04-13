@@ -217,33 +217,38 @@ function Home() {
             <div id="map" className="absolute top-0 w-full mx-auto h-full z-0 overflow-hidden"></div>
             <div className='relative z-10 pointer-events-none'>
                 <div className='w-[45vh] h-[100vh] relative overflow-scroll' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+
                     <div className='flex flex-col h-full justify-between overflow-hidden p-8  '>
-                        <div className='flex flex-row justify-between'>
-                            <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                                </svg>
-                            </Button>
-                            <div className='flex flex-row gap-3'>
+                        <div className='flex flex-col gap-4'>
+                            <div className='flex flex-row justify-between'>
                                 <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
                                     </svg>
                                 </Button>
-                                <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 transform rotate-12">
-                                        <path className='' strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                                    </svg>
-                                </Button>
-                            </div>
-                        </div>
-                        <div>
-                            {showPopup && (
-                                <div className="journey-details-popup">
-                                    <p>Duration: {journeyDetails.duration / 60} minutes</p>
-                                    <p>Distance: {journeyDetails.distance / 1000} km</p>
+                                <div className='flex flex-row gap-3'>
+                                    <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                    </Button>
+                                    <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 transform rotate-12">
+                                            <path className='' strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                                        </svg>
+                                    </Button>
                                 </div>
-                            )}
+                            </div>
+                            <div>
+                                {showPopup && (
+                                    <div className='flex p-6 border border-1 bg-white rounded-lg '>
+                                        <div className=" flex flex-col">
+                                            <p>Time To Reach: {Math.ceil(journeyDetails.duration / 60)} minutes</p>
+                                            <p>Distance to destination: <span className='font-semibold'>{Math.ceil(journeyDetails.distance / 1000)}</span> km</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className='flex flex-col mb-24 gap-4 pointer-events-auto'>
                             <div className="flex flex-row justify-between items-center">
@@ -258,62 +263,68 @@ function Home() {
                                     </svg>
                                 </Button>
                             </div>
-                            <div className='flex flex-col border border-2 border-black bg-white p-4 rounded-xl gap-4'>
-                                {/* source field */}
-                                <div className='flex flex-row items-center justify-stretch rounded-xl relative'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        onChange={(e) => setSource(e.target.value)}
-                                        onFocus={() => handleInputFocus(setShowSourceDropdown)}
-                                        onBlur={() => handleInputBlur(setShowSourceDropdown)}
-                                        className='bg-transparent outline-none p-2'
-                                        placeholder='Where from?'
-                                        value={source}
-                                    />
-                                    {showSourceDropdown && sourceList.length > 0 && (
-                                        <div className='absolute bg-white border border-gray-200 rounded shadow-lg bottom-full mb-2'>
-                                            {sourceList.map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    onClick={() => handleSelectOptionSource(setSource, setSourceList, item.name, item)}
-                                                    className='p-2 hover:bg-gray-200 cursor-pointer'
-                                                >
-                                                    {item.name}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                            <div className='flex flex-col gap-2'>
+
+                                <div className='flex flex-col border border-2 border-black bg-white p-4 rounded-xl gap-4'>
+                                    {/* source field */}
+                                    <div className='flex flex-row items-center justify-stretch rounded-xl relative'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                        <input
+                                            type="text"
+                                            onChange={(e) => setSource(e.target.value)}
+                                            onFocus={() => handleInputFocus(setShowSourceDropdown)}
+                                            onBlur={() => handleInputBlur(setShowSourceDropdown)}
+                                            className='bg-transparent outline-none p-2'
+                                            placeholder='Where from?'
+                                            value={source}
+                                        />
+                                        {showSourceDropdown && sourceList.length > 0 && (
+                                            <div className='absolute bg-white border border-gray-200 rounded shadow-lg bottom-full mb-2'>
+                                                {sourceList.map((item, index) => (
+                                                    <div
+                                                        key={index}
+                                                        onClick={() => handleSelectOptionSource(setSource, setSourceList, item.name, item)}
+                                                        className='p-2 hover:bg-gray-200 cursor-pointer'
+                                                    >
+                                                        {item.name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {/* destination field */}
                                 </div>
-                                {/* destination field */}
-                                <div className='flex flex-row items-center justify-stretch rounded-xl relative'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        onChange={(e) => setDestination(e.target.value)}
-                                        onFocus={() => handleInputFocus(setShowDestinationDropdown)}
-                                        onBlur={() => handleInputBlur(setShowDestinationDropdown)}
-                                        className='bg-transparent outline-none p-2'
-                                        placeholder='Where to?'
-                                        value={destination}
-                                    />
-                                    {showDestinationDropdown && destinationList.length > 0 && (
-                                        <div className='absolute bg-white border border-gray-200 rounded shadow-lg bottom-full mb-2'>
-                                            {destinationList.map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    onClick={() => handleSelectOptionDestination(setDestination, setDestinationList, item.name, item)}
-                                                    className='p-2 hover:bg-gray-200 cursor-pointer'
-                                                >
-                                                    {item.name}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                <div className='flex flex-col border border-2 border-black bg-white p-4 rounded-xl gap-2'>
+
+                                    <div className='flex flex-row items-center justify-stretch rounded-xl relative'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                        <input
+                                            type="text"
+                                            onChange={(e) => setDestination(e.target.value)}
+                                            onFocus={() => handleInputFocus(setShowDestinationDropdown)}
+                                            onBlur={() => handleInputBlur(setShowDestinationDropdown)}
+                                            className='bg-transparent outline-none p-2 w-full'
+                                            placeholder='Where to?'
+                                            value={destination}
+                                        />
+                                        {showDestinationDropdown && destinationList.length > 0 && (
+                                            <div className='absolute bg-white border border-gray-200 rounded shadow-lg bottom-full mb-2'>
+                                                {destinationList.map((item, index) => (
+                                                    <div
+                                                        key={index}
+                                                        onClick={() => handleSelectOptionDestination(setDestination, setDestinationList, item.name, item)}
+                                                        className='p-2 hover:bg-gray-200 cursor-pointer'
+                                                    >
+                                                        {item.name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
