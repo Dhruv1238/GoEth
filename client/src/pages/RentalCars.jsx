@@ -41,7 +41,7 @@ function RentalCars() {
     ]);
     return (
         <>
-            <div className='w-[55vh] h-[100vh] bg-white rounded-xl relative  '>
+            <div className='w-[45vh] h-[100vh] bg-white relative'>
                 <div className='flex flex-col p-8'>
                     <Link to="/home">
                         <div className="flex flex-row items-center cursor-pointer ">

@@ -14,7 +14,7 @@ function Home() {
     const [location, setLocation] = useState('')
     return (
         <>
-            <div className='w-[55vh] h-[100vh] bg-white rounded-xl relative'>
+            <div className='w-[45vh] h-[100vh] bg-white relative'>
                 <div className='flex flex-col h-full justify-between overflow-hidden p-8  '>
                     <div className='flex flex-row justify-between'>
                         <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
