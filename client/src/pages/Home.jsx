@@ -23,6 +23,8 @@ function Home() {
     const [sourceLng, setSourceLng] = useState();
     const [destinationLat, setDestinationLat] = useState();
     const [destinationLng, setDestinationLng] = useState();
+    const [showPopup, setShowPopup] = useState(false);
+    const [journeyDetails, setJourneyDetails] = useState({ duration: 0, distance: 0 });
 
     const API_KEY = import.meta.env.VITE_APP_MAPBOX_ACCESS_KEY;
     const PUBLIC_KEY = import.meta.env.VITE_APP_MAPBOX_PUBLIC_KEY;
@@ -81,81 +83,48 @@ function Home() {
         setTimeout(() => setShowDropdown(false), 200);
     };
 
-const handleSelectOptionSource = (setInput, setList, option, item) => {
-    setInput(option);
-    setList([]);
-    fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
-    .then(req => req.json())
-    .then(result => {
-        console.log('Selected Source: ', result);
-        setSourceLat(result.features[0].properties.coordinates.latitude);
-        setSourceLng(result.features[0].properties.coordinates.longitude);
-    });
-};
-console.log('Source Latitude: ', sourceLat);
-console.log('Source Longitude: ', sourceLng);
+    const handleSelectOptionSource = (setInput, setList, option, item) => {
+        setInput(option);
+        setList([]);
+        fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
+            .then(req => req.json())
+            .then(result => {
+                console.log('Selected Source: ', result);
+                setSourceLat(result.features[0].properties.coordinates.latitude);
+                setSourceLng(result.features[0].properties.coordinates.longitude);
+            });
+    };
+    console.log('Source Latitude: ', sourceLat);
+    console.log('Source Longitude: ', sourceLng);
 
-const handleSelectOptionDestination = (setInput, setList, option, item) => {
-    setInput(option);
-    setList([]);
-    fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
-    .then(req => req.json())
-    .then(result => {
-        console.log('Selected Destination: ', result);
-        setDestinationLat(result.features[0].properties.coordinates.latitude);
-        setDestinationLng(result.features[0].properties.coordinates.longitude);
-    });
-};
-console.log('Destination Latitude: ', destinationLat);
-console.log('Destination Longitude: ', destinationLng);
-    // useEffect(() => {
-    //     console.log('Source Coordinates: ', sourceCoordinates);
-    // }, [sourceCoordinates]);
-    
-    // useEffect(() => {
-    //     console.log('Destination Coordinates: ', destinationCoordinates);
-    // }, [destinationCoordinates]);
-    
+    const handleSelectOptionDestination = (setInput, setList, option, item) => {
+        setInput(option);
+        setList([]);
+        fetch(`https://api.mapbox.com/search/searchbox/v1/retrieve/${item.mapbox_id}?session_token=${SESSION_TOKEN}&access_token=${API_KEY}`)
+            .then(req => req.json())
+            .then(result => {
+                console.log('Selected Destination: ', result);
+                setDestinationLat(result.features[0].properties.coordinates.latitude);
+                setDestinationLng(result.features[0].properties.coordinates.longitude);
+            });
+    };
+    console.log('Destination Latitude: ', destinationLat);
+    console.log('Destination Longitude: ', destinationLng);
 
-    // useEffect(() => {
-    //     mapboxgl.accessToken = PUBLIC_KEY;
-    //     const map = new mapboxgl.Map({
-    //         container: 'map', // container id
-    //         style: 'mapbox://styles/mapbox/streets-v9', // style URL
-    //         center: [72.9005454139102, 19.072655410514404], // starting position [lng, lat]
-    //         zoom: 14 // starting zoom
-    //     });
-
-    //     // Add a marker at the user's location
-    //     if (userLocation) {
-    //         new mapboxgl.Marker()
-    //             .setLngLat([userLocation.longitude, userLocation.latitude])
-    //             .addTo(map);
-    //     }
-
-    //     if (sourceLat && sourceLng) {
-    //         new mapboxgl.Marker()
-    //             .setLngLat([sourceLat, sourceLng])
-    //             .color('red')
-    //             .addTo(map);
-    //             map.flyTo({
-    //                 center: [sourceLat, sourceLng],
-    //                 essential: true
-    //             })
-    //     }
-
-    //     if (destinationLat && destinationLng) {
-    //         new mapboxgl.Marker()
-    //             .setLngLat([destinationLat, destinationLng])
-    //             .addTo(map);
-    //             map.flyTo({
-    //                 center: [destinationLat, destinationLng],
-    //                 essential: true
-    //             })
-    //     }
-
-    //     return () => map.remove();
-    // }, [userLocation]);
+    const getDirectionRoute = async () => {
+        const req = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${sourceLng},${sourceLat};${destinationLng},${destinationLat}?overview=full&geometries=geojson&access_token=${PUBLIC_KEY}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+        const result = await req.json();
+        console.log('Route: ', result);
+        const routeGeometry = result.routes[0].geometry;
+        const duration = result.routes[0].duration;
+        const distance = result.routes[0].distance;
+        return { routeGeometry, duration, distance };
+    }
 
     useEffect(() => {
         mapboxgl.accessToken = PUBLIC_KEY;
@@ -165,20 +134,20 @@ console.log('Destination Longitude: ', destinationLng);
             center: [72.9005454139102, 19.072655410514404], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-    
+
         // Function to update map and markers
         const updateMapAndMarkers = () => {
             // Remove existing markers
             map.getSource('sourceMarker')?.setData({ type: 'FeatureCollection', features: [] });
             map.getSource('destinationMarker')?.setData({ type: 'FeatureCollection', features: [] });
-    
+
             // Add user location marker
             if (userLocation) {
                 new mapboxgl.Marker()
                     .setLngLat([userLocation.longitude, userLocation.latitude])
                     .addTo(map);
             }
-    
+
             // Add source marker
             if (sourceLat && sourceLng) {
                 new mapboxgl.Marker({ color: 'red' })
@@ -189,7 +158,7 @@ console.log('Destination Longitude: ', destinationLng);
                     essential: true
                 });
             }
-    
+
             // Add destination marker
             if (destinationLat && destinationLng) {
                 new mapboxgl.Marker()
@@ -201,10 +170,42 @@ console.log('Destination Longitude: ', destinationLng);
                 });
             }
         };
-    
+
+        const displayRoute = (routeGeoJSON, duration, distance) => {
+            if (map.getSource('route')) {
+                map.getSource('route').setData(routeGeoJSON);
+            } else {
+                map.addSource('route', {
+                    type: 'geojson',
+                    data: routeGeoJSON
+                });
+                map.addLayer({
+                    id: 'route',
+                    type: 'line',
+                    source: 'route',
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': '#888',
+                        'line-width': 8
+                    }
+                });
+            }
+            setJourneyDetails({ duration, distance });
+            setShowPopup(true);
+        };
+
+        if (sourceLat && sourceLng && destinationLat && destinationLng) {
+            getDirectionRoute().then(({ routeGeometry, duration, distance }) => {
+                displayRoute(routeGeometry, duration, distance);
+            });
+        }
+
         // Call the function to update map and markers
         updateMapAndMarkers();
-    
+
         return () => map.remove();
     }, [userLocation, sourceLat, sourceLng, destinationLat, destinationLng]);
 
@@ -237,6 +238,12 @@ console.log('Destination Longitude: ', destinationLng);
                             </div>
                         </div>
                         <div>
+                            {showPopup && (
+                                <div className="journey-details-popup">
+                                    <p>Duration: {journeyDetails.duration / 60} minutes</p>
+                                    <p>Distance: {journeyDetails.distance / 1000} km</p>
+                                </div>
+                            )}
                         </div>
                         <div className='flex flex-col mb-24 gap-4 pointer-events-auto'>
                             <div className="flex flex-row justify-between items-center">
