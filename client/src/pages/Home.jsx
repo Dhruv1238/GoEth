@@ -14,7 +14,7 @@ function Home() {
     const [location, setLocation] = useState('')
     return (
         <>
-            <div className='w-[45vh] h-[100vh] bg-white relative'>
+            <div className='w-[45vh] h-[100vh] bg-white relative overflow-scroll' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 <div className='flex flex-col h-full justify-between overflow-hidden p-8  '>
                     <div className='flex flex-row justify-between'>
                         <Button className='flex items-center justify-center w-10 h-10 bg-black rounded-lg'>
@@ -85,9 +85,10 @@ function Home() {
 
                         </div>
                     </div>
-                    <div className='absolute bottom-0 '>
-                        <Navbar />
-                    </div>
+
+                </div>
+                <div className='absolute bottom-0 w-full'>
+                    <Navbar />
                 </div>
             </div >
         </>

@@ -100,10 +100,10 @@ function RentalCars() {
 
                     </div>
 
-                    <div className='fixed absolute bottom-0 '>
+                </div>
+                    <div className='absolute bottom-0 w-full'>
                         <Navbar />
                     </div>
-                </div>
             </div>
         </>
     )
