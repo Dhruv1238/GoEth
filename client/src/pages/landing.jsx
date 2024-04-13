@@ -6,9 +6,8 @@ const Landing = () => {
         <>
             <div>
                 <h2 className="text-white ">hellow</h2>
-                <Button color="purple" >
-                    Hello World
-                </Button>
+                <Button size="lg" color="red" variant="gradient">gradient</Button>
+
             </div>
         </>
     );
