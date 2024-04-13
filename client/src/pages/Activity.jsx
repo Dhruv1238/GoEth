@@ -3,8 +3,13 @@ import Navbar from '../components/Navbar'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-tailwind/react'
 import authCheck from '../components/AuthCheck';
+import { useContext } from 'react';
+import { TransactionContext } from '../context/TransactionContext';
 
 function Activity() {
+
+    const { signTransaction, connectWallet } = useContext(TransactionContext);
+
 
     const [nftName,setNftName] = useState('Logabooze')
     return (
@@ -47,7 +52,7 @@ function Activity() {
                                 <div className='w-20 h-20 bg-yellow-400 rounded-lg flex items-center justify-center'>
                                 <p className='text-2xl font-semibold '>NFT</p>
                                 </div>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col' onClick={connectWallet}>
                                     <p className='font-semibold text-lg'>Minted 4 {nftName}'s </p>
                                     <p className='font-extralight text-sm text-gray-400'>Using an Electric Vehicle</p>
                                     <p className='font-extralight text-sm text-gray-400'>28 March | 9:54 pm</p>
