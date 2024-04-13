@@ -2,10 +2,16 @@ import Navbar from '../components/Navbar'
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-tailwind/react'
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 function Profile() {
+
+    const { user } = useContext(AuthContext);
+
+
     const [userInfo, setUserInfo] = useState({
-        name: 'Pratham',
+        name: user!=null? user.displayName : "Please Sign In",
         lastName: 'Goenka',
         phoneNumber: '9912245690',
         email: 'PrGoenka12@gmail.com',
