@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 import { contractABI, contractAddress } from '../utils/constants';
+import abi from '../utils/GoEthEscrow.json';
 
 // Create the TransactionContext
 export const TransactionContext = createContext();
@@ -16,6 +17,10 @@ export const TransactionContextProvider = ({ children }) => {
     const [requestedRides, setRequestedRides] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [bids, setBids] = useState([]);
+
+    const tokenABI = abi.abi;
+
+    const tokenAddress = "0x2576980B638b257d5f3Bf41ed22c28079f10ABCb";
 
     const connectWallet = async () => {
         if (!window.ethereum) {
@@ -229,10 +234,19 @@ export const TransactionContextProvider = ({ children }) => {
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-            // Send the transaction
-            // Send the transaction with a specific gas limit
-            const transactionResponse = await contract.acceptBid(requestId, bidId, {
-                gasLimit: ethers.utils.hexlify(1000000), // 1,000,000 gas units
+            // Convert requestId and bidId to BigNumber if they're not already
+            const requestIdBigNumber = ethers.BigNumber.isBigNumber(requestId) ? requestId : ethers.BigNumber.from(requestId);
+            const bidIdBigNumber = ethers.BigNumber.isBigNumber(bidId) ? bidId : ethers.BigNumber.from(bidId);
+
+            // Ensure the rider has approved the contract to spend their tokens
+            // const tokenDecimals = 18;
+            // const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
+            // const approveTx = await tokenContract.approve(contractAddress, ethers.utils.parseUnits("0.01", tokenDecimals));
+            // await approveTx.wait();
+
+            // Send the transaction with an increased gas limit
+            const transactionResponse = await contract.acceptBid(requestIdBigNumber, bidIdBigNumber, {
+                gasLimit: ethers.utils.hexlify(2000000), // Increased to 2,000,000 gas units
             });
 
             // Wait for the transaction to be mined
@@ -245,6 +259,7 @@ export const TransactionContextProvider = ({ children }) => {
             setIsLoading(false);
         }
     };
+
 
     return (
         <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid }}>

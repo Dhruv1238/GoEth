@@ -12,6 +12,7 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
     // State to store user data
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [userType, setUserType] = useState(null);
     // const storedUser = localStorage.getItem('user');
     // const initialUserState = storedUser ? JSON.parse(storedUser) : null;
     // const [user, setUser] = useState(initialUserState);
@@ -62,6 +63,8 @@ export const AuthContextProvider = ({ children }) => {
     const contextValue = {
         user,
         handleGoogleSignIn,
+        userType,
+        setUserType
     };
 
     // Return the AuthContextProvider with the context value and children

@@ -107,10 +107,11 @@ function Activity() {
                                         <p className='text-2xl font-semibold '>Bid</p>
                                     </div>
                                     <div className='flex flex-col gap-2'>
+                                        <p className='font-semibold text-lg'>Id: {bid.bidId.toNumber()}</p>
                                         <p className='font-extralight text-sm text-gray-700'>{ethers.utils.formatEther(bid.amount)} ETH</p>
                                         <p className='font-extralight text-sm text-gray-700'>{ethers.utils.formatEther(bid.amount) * 268873.65} INR</p>
                                     </div>
-                                    <Button onClick={()=>acceptBid(0,0)} className='w-20 h-8 p-2 rounded-lg bg-black text-white'>Accept</Button>
+                                    <Button onClick={()=>acceptBid(0,bid.bidId)} className='w-20 h-8 p-2 rounded-lg bg-black text-white'>Accept</Button>
                                 </div>
                             </div>
                         </>
