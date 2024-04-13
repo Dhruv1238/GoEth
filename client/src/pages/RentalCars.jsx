@@ -12,26 +12,30 @@ function RentalCars() {
             timeToArrive: '10 mins',
             name: 'BMW Cabrio',
             distance: '5 km',
-            img: ''
+            img: 'https://t3.ftcdn.net/jpg/02/22/85/16/360_F_222851624_jfoMGbJxwRi5AWGdPgXKSABMnzCQo9RN.jpg',
+            driverName:'Hamiz Parekh'
         },
         {
             timeToArrive: '15 mins',
             name: 'Audi SUV',
             distance: '10 km',
-            img: ''
+            img: '',
+            driverName:'Sarfaraz Shaikh'
         },
         {
             timeToArrive: '20 mins',
             name: 'Mercedes Sedan',
             distance: '15 km',
-            img: ''
+            img: '',
+            driverName:'Dhruv Khan'
 
         },
         {
             timeToArrive: '20 mins',
             name: 'Mercedes Sedan',
             distance: '15 km',
-            img: ''
+            img: '',
+            driverName:'Pratham choenka'
 
         }
     ]);
@@ -56,6 +60,11 @@ function RentalCars() {
                         {cars.map((car, index) => (
 
                             <div key={index} className='flex flex-col p-4 border border-2 border-black rounded-xl gap-2 '>
+                                <div className='flex flex-row gap-4 items-center'>
+                                    <img src={car.img} className='w-8 h-8 border border-2 border-black rounded-full' alt="" />
+                                    <p className='text-base font-semibold'>{car.driverName}</p>
+                                </div>
+                                
                                 <div className='flex flex-row'>
                                     <div className='flex flex-col '>
                                         <p className='text-black'>{car.name}</p>

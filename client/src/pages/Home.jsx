@@ -39,10 +39,10 @@ function Home() {
                         </div>
                     </div>
                     <div className='flex flex-col mb-24 gap-4 '>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-between items-center">
                             <Link to="/rent">
-                                <Button className='bg-black w-36 text-white p-4 pl-6 pr-6 '>
-                                    Rental
+                                <Button className='bg-black text-white p-4 pl-6 pr-6 '>
+                                    Book a Cab
                                 </Button>
                             </Link>
                             <Button className='bg-black flex items-center justify-center p-4 rounded-lg'>
