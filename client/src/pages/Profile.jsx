@@ -1,12 +1,28 @@
-import React from 'react'
 import Navbar from '../components/Navbar'
+import React, { useState } from 'react';
+import { Input } from '@mui/base/Input';
 
 function Profile() {
+    const [userInfo, setUserInfo] = useState({
+        name: 'Pratham',
+        lastName: 'JG',
+        phoneNumber: '9912245690',
+        email: 'Pjg@gmail.com',
+        address: '',
+        TypeOfUser: 'Driver',
+        isEditingAddress: false
+    });
+
+
     return (
         <>
             <div className='w-[45vh] h-[100vh] bg-white relative'>
-                <div className='flex flex-col overflow-hidden' style={{ backgroundImage: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.justvehicle.solutions%2Fblog-google-maps-tips%2F&psig=AOvVaw2pIVcfTpA4l8ouyZ-8ZRcu&ust=1713078071639000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPDV6KbPvoUDFQAAAAAdAAAAABAE" }}>
+                <div className='flex flex-col overflow-hidden'>
+                    <div className='flex flex-col p-8 '>
+                        
 
+
+                    </div>
                     <div className='absolute bottom-0 w-full'>
                         <Navbar />
                     </div>
