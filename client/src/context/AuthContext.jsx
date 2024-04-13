@@ -11,7 +11,11 @@ export const AuthContext = createContext();
 // Create the AuthContextProvider component
 export const AuthContextProvider = ({ children }) => {
     // State to store user data
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    // const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const storedUser = localStorage.getItem('user');
+    const initialUserState = storedUser ? JSON.parse(storedUser) : null;
+    const [user, setUser] = useState(initialUserState);
+
 
     console.log(user);
 
