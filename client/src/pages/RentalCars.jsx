@@ -101,7 +101,7 @@ function RentalCars() {
                     </div>
 
                 </div>
-                    <div className='absolute bottom-0 w-full'>
+                    <div className='absolute bottom-0 '>
                         <Navbar />
                     </div>
             </div>
