@@ -6,6 +6,7 @@ import {
     Typography,
     IconButton,
 } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 
 function UserLive() {
     const [openBottom, setOpenBottom] = React.useState(true);
@@ -53,9 +54,7 @@ function UserLive() {
                         </div>
                         <div className='p-4 flex flex-row justify-between'>
                             <div className='flex flex-row gap-4 items-center justify-center'>
-                                <div className='w-20 h-20 bg-black rounded-xl'>
-
-                                </div>
+                                <Link to=""><Button className='w-20 h-20 bg-black rounded-xl'></Button></Link>
                                 <div className='flex flex-col '>
                                     <p className='text-xl '>{driver}</p>
                                     <p className='text-base text-gray-700 '>{distance}m {'('} 5mins Away {')'}</p>
