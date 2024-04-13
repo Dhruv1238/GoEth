@@ -11,7 +11,7 @@ function Profile() {
         email: 'PrGoenka12@gmail.com',
         address: '',
         TypeOfUser: 'Driver',
-        isEditingAddress: false,
+        // isEditingAddress: false,
         img: 'tt2.svg'
     });
 

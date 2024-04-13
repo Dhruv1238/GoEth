@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <>
-      <div className="bottom-0 h-16 p-4 mb-6 pt-6 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 flex flex-col-reverse bg-white">
+      <div className="bottom-0 h-24 p-4 pt-6 border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 flex flex-col-reverse bg-white">
         <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
           <Link to="/home">
             <button type="button" className="inline-flex flex-col items-center justify-center px-5 dark:hover:bg-gray-800 group">
