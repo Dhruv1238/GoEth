@@ -9,8 +9,8 @@ function Navbar() {
 
   return (
     <>
-      <div className="bottom-0 h-16 p-4 mb-6 pt-6 border-t border-gray-200 flex flex-col-reverse bg-none pointer-events-auto">
-        <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium justify-between">
+      <div className="bottom-0 h-24 p-4 pt-6 border-t bg-white border-gray-200 flex flex-col-reverse bg-none pointer-events-auto">
+        <div className="grid h-full max-w-lg grid-cols-4 mx-auto my-auto items-center font-medium justify-between">
           <Link to="/home">
             <button type="button" className="inline-flex flex-col items-center justify-center px-5  group">
               <svg className="w-5 h-5 mb-2 text-gray-900   group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -21,12 +21,10 @@ function Navbar() {
           </Link>
           <Link to="/rent">
             <button type="button" className="inline-flex flex-col items-center justify-center px-5  group">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path fillRule="evenodd" d="M12 1.5c-1.921 0-3.816.111-5.68.327-1.497.174-2.57 1.46-2.57 2.93V21.75a.75.75 0 0 0 1.029.696l3.471-1.388 3.472 1.388a.75.75 0 0 0 .556 0l3.472-1.388 3.471 1.388a.75.75 0 0 0 1.029-.696V4.757c0-1.47-1.073-2.756-2.57-2.93A49.255 49.255 0 0 0 12 1.5Zm3.53 7.28a.75.75 0 0 0-1.06-1.06l-6 6a.75.75 0 1 0 1.06 1.06l6-6ZM8.625 9a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm5.625 3.375a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" clipRule="evenodd" />
               </svg>
-
-
-              <span className="text-sm text-gray-900   group-hover:text-blue-500">Rentals</span>
+              <span className="text-sm text-gray-900 mt-2  group-hover:text-blue-500">Rentals</span>
             </button>
           </Link>
           <Link to="/activity">

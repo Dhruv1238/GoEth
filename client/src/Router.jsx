@@ -12,6 +12,7 @@ import Understand from './pages/Understand';
 import DriverSide from './pages/DriverSide';
 import DriverHome from './pages/DriverHome';
 import CabBookings from './pages/CabBookings';
+import UserLive from './pages/UserLive';
 
 const AppRouter = () => {
     return (
@@ -29,6 +30,8 @@ const AppRouter = () => {
             <Route path="/driverInfo" element={<DriverSide />} />
             <Route path="/driverhome" element={<DriverHome />} />
             <Route path="/book" element={<CabBookings />} />
+            <Route path="/userlive" element={<UserLive />} />
+
 
 
         </Routes>
