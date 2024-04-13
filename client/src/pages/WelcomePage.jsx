@@ -1,22 +1,23 @@
 import { Button } from '@material-tailwind/react'
-import React from 'react'
-import { Link } from 'react-router-dom';
-import { auth, provider, db } from '../firebase';
-import { signInWithPopup } from 'firebase/auth';
+import React, { useEffect } from 'react'
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 function WelcomePage() {
 
+    const { handleGoogleSignIn, user } = useContext(AuthContext);
 
-    const signIn = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            })
-    }
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            console.log(user);
+            navigate('/home');
+        }
+    }, [user])
+
 
     return (
         <>
@@ -34,7 +35,7 @@ function WelcomePage() {
                     </div>
                     <div className='flex flex-col gap-4 pl-4 pr-4 '>
                         <Button className=' rounded-lg p-4 bg-black text-white'>Login As a Driver</Button>
-                        <Button onClick={signIn} className='w-full rounded-lg p-4 bg-transparent border-2 border-black text-black' >Login as a Customer</Button>
+                        <Button onClick={handleGoogleSignIn} className='w-full rounded-lg p-4 bg-transparent border-2 border-black text-black' >Login as a Customer</Button>
                     </div>
                 </div>
             </div>
