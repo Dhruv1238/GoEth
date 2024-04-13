@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Carousel } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 
 function Landing() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Array of image URLs
-    const images = ['tt1.png', 'tt2.png', 'tt3.png'];
+    const images = ['tt1.svg', 'tt2.svg', 'tt3.svg'];
     const body_texts = [
         'Sell houses Toughly with the help of Listenoryx and to make this line big I am writing more.',
         'Sell houses easily with the help of Listenoryx and to make this line big I am writing more.',
@@ -23,10 +24,11 @@ function Landing() {
     };
 
     return (
-        <div className='mt-8 mb-8 p-2 w-[55vh] bg-white  rounded-xl  relative'>
+        <div className=' w-[55vh] h-[100vh] bg-white  rounded-xl  relative'>
             <div className='flex flex-col p-8 gap-28'>
                 <div className="flex flex-row-reverse">
-                    <p onClick={handleButtonClick} className='flex  cursor-pointer'>Skip</p>
+                <Link to="/welcome" className='flex cursor-pointer'> <p  className='flex  cursor-pointer'>Skip</p>
+</Link>
                 </div>
                 {/* Use currentIndex to dynamically change the image */}
                 <div className="flex items-center transition-smooth transition-all duration-1000">
@@ -37,7 +39,7 @@ function Landing() {
                     <p className='text-sm leading-tight text-[#A0A0A0] w-[250px] text-center '>{body_texts[currentIndex]}</p>
                 </div>
                 <div className='flex flex-col items-center mt-24'>
-                    <Button onClick={handleButtonClick} className='w-[70px] flex items-center justify-center h-[70px] bg-black rounded-full  border-4 solid black '>
+                    <Button onClick={handleButtonClick} className='w-[70px] flex items-center justify-center h-[70px] bg-gray-900 rounded-full  border-4 solid black '>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                         </svg>
