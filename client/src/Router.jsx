@@ -9,6 +9,7 @@ import RentalCars from './pages/RentalCars';
 import MapSearch from './pages/MapSearch';
 import Activity from './pages/Activity';
 import Understand from './pages/Understand';
+import DriverSide from './pages/DriverSide';
 
 const AppRouter = () => {
     return (
@@ -22,9 +23,7 @@ const AppRouter = () => {
             <Route path="/rent" element={<RentalCars />} />
             <Route path="/activity" element={<Activity />} />
             <Route path="/understand" element={<Understand />} />
-
-
-
+            <Route path="/driver" element={<DriverSide />} />
 
         </Routes>
     );

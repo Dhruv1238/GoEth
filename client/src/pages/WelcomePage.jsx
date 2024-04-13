@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 function WelcomePage() {
 
@@ -34,7 +34,7 @@ function WelcomePage() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-4 pl-4 pr-4 '>
-                        <Button className=' rounded-lg p-4 bg-black text-white'>Login As a Driver</Button>
+                       <Link to="/driver"><Button className=' rounded-lg p-4 bg-black text-white'>Login As a Driver</Button></Link> 
                         <Button onClick={handleGoogleSignIn} className='w-full rounded-lg p-4 bg-transparent border-2 border-black text-black' >Login as a Customer</Button>
                     </div>
                 </div>

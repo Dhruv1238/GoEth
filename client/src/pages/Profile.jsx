@@ -48,17 +48,20 @@ function Profile() {
                             <p className='font-thin text-lg text-gray-500 '>{userInfo.phoneNumber}</p>
                             <p>Stars: 5</p>
                             <Link to="/understand">
-                            <p className='text-xs text-gray-400'>Understand Rating</p>
+                                <p className='text-xs text-gray-400'>Understand Rating</p>
                             </Link>
                         </div>
                         <div >
                             <img src={userInfo.img} className='w-20 h-20 p-1 rounded-full border border-1 border-black' alt="" />
                         </div>
                     </div>
-                    <div className='flex flex-row p-4 mx-auto justify-between w-4/5 border border-1 rounded-xl'>
-                            <p>Estimated CO2 saved</p>
-                            
-                            <p>{userInfo.CO2} G</p>
+                    <div className='pl-8 pr-8'>
+
+                    <div className='flex  flex-row p-4 items-center  justify-between max-w-[full]  bg-green-500 text-white  rounded-xl'>
+                        <p>Estimated CO2 saved</p>
+
+                        <p className='font-semibold'>{userInfo.CO2} G</p>
+                    </div>
                     </div>
                     <div className='max-w-2xl mx-auto relative'>
                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your Address</label>
@@ -69,9 +72,15 @@ function Profile() {
                             </Button>
                         </div>
                     </div>
-                    <div className='mt-12 flex items-center justify-center'>
+                    <div className='flex items-start pl-10'>
+                        <Button className="bg-black p-4 w-1/3">
+                            Sign Out
+                        </Button>
+                    </div>
+                    <div className='mt-12 mb-12 flex items-center justify-center'>
                         <img src="tt3.svg" className='w-70 h-70' alt="" />
                     </div>
+                    
                     <div className='absolute bottom-0 w-full'>
                         <Navbar />
                     </div>
