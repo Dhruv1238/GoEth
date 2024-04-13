@@ -1,15 +1,50 @@
-import React from "react";
-import {Button} from "@material-tailwind/react";
+import React, { useState } from 'react';
+import { Button, Carousel } from "@material-tailwind/react";
 
-const Landing = () => {
+function Landing() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Array of image URLs
+    const images = ['tt1.png', 'tt2.png', 'tt3.png'];
+    const body_texts = [
+        'Sell houses Toughly with the help of Listenoryx and to make this line big I am writing more.',
+        'Sell houses easily with the help of Listenoryx and to make this line big I am writing more.',
+        'Sell houses muchhchchc with the help of Listenoryx and to make this line big I am writing more.'
+    ];
+    const header_texts = [
+        'Anywhere you are',
+        'At anytime',
+        'Book your car'
+    ];
+    // Function to handle button click
+    const handleButtonClick = () => {
+        // Increment currentIndex, cycling back to 0 when reaching the end
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    };
+
     return (
-        <>
-            <div>
-                <h2 className="text-white ">hellow</h2>
-                <Button size="lg" color="red" variant="gradient">gradient</Button>
-
+        <div className='mt-8 mb-8 p-2 w-[55vh] bg-white  rounded-xl  relative'>
+            <div className='flex flex-col p-8 gap-28'>
+                <div className="flex flex-row-reverse">
+                    <p onClick={handleButtonClick} className='flex  cursor-pointer'>Skip</p>
+                </div>
+                {/* Use currentIndex to dynamically change the image */}
+                <div className="flex items-center transition-smooth transition-all duration-1000">
+                    <img src={images[currentIndex]} className='w-[350px] h-[170px]' alt="" />
+                </div>
+                <div className='flex flex-col items-center gap-2 mt-[-84px] transition-smooth duration-1000'>
+                    <p className='text-2xl leading-tight'>{header_texts[currentIndex]}</p>
+                    <p className='text-sm leading-tight text-[#A0A0A0] w-[250px] text-center '>{body_texts[currentIndex]}</p>
+                </div>
+                <div className='flex flex-col items-center mt-24'>
+                    <Button onClick={handleButtonClick} className='w-[70px] flex items-center justify-center h-[70px] bg-black rounded-full  border-4 solid black '>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </Button>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
