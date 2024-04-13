@@ -7,6 +7,7 @@ const AppRouter = () => {
     return (
         <Routes>
             <Route path="/" element={<Landing />} />
+
         </Routes>
     );
 };
