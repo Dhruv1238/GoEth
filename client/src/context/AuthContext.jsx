@@ -1,7 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
 
@@ -16,6 +16,47 @@ export const AuthContextProvider = ({ children }) => {
     // const storedUser = localStorage.getItem('user');
     // const initialUserState = storedUser ? JSON.parse(storedUser) : null;
     // const [user, setUser] = useState(initialUserState);
+    const [userData, setUserData] = useState(null);
+
+
+    const listenUserData = () => {
+        if (user && user.email) {
+            const docRef = doc(db, 'users', user.email);
+
+            const unsubscribe = onSnapshot(docRef, (doc) => {
+                if (doc.exists()) {
+                    setUserData(doc.data());
+                } else {
+                    console.log('No such document!');
+                }
+            });
+
+            // Return the unsubscribe function to stop listening for updates
+            return unsubscribe;
+        }
+    }
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (user && user.email) {
+                const docRef = doc(db, 'users', user.email);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    setUserData(docSnap.data());
+                } else {
+                    console.log('No such document!');
+                }
+            }
+        };
+        fetchUserData();
+        console.log(user);
+
+        const unsubscribe = listenUserData();
+
+        // Stop listening for updates when the component is unmounted
+        return () => unsubscribe && unsubscribe();
+    }, [user]);
 
 
     console.log(user);
@@ -38,7 +79,7 @@ export const AuthContextProvider = ({ children }) => {
             // Get a reference to the user's document
             if (userType === 'user') {
                 const userDocRef = doc(db, 'users', result.user.email);
-            }else if (userType === 'driver') {
+            } else if (userType === 'driver') {
                 const userDocRef = doc(db, 'Drivers', result.user.email);
             }
 
@@ -67,7 +108,8 @@ export const AuthContextProvider = ({ children }) => {
         user,
         handleGoogleSignIn,
         userType,
-        setUserType
+        setUserType,
+        userData,
     };
 
     // Return the AuthContextProvider with the context value and children

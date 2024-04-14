@@ -15,8 +15,22 @@ import React from 'react';
 import { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Home() {
+
+    const navigate = useNavigate();
+    const { requestRide } = useContext(TransactionContext);
+
+    const { user, userData } = useContext(AuthContext);
+
+    if (userData?.hasBooked) {
+        console.log('Navigating to /rent');
+        navigate('/book');
+    } else {
+        console.log('Not navigating');
+    }
+
     const [isTransport, setIsTransport] = useState(true);
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
@@ -41,11 +55,6 @@ function Home() {
     const [distanceee, setDistanceee] = useState('500')
     const openDrawerRight = () => setOpenRight(true);
     const closeDrawerRight = () => setOpenRight(false);
-
-    const { requestRide } = useContext(TransactionContext);
-
-    const navigate = useNavigate();
-
 
     const API_KEY = import.meta.env.VITE_APP_MAPBOX_ACCESS_KEY;
     const PUBLIC_KEY = import.meta.env.VITE_APP_MAPBOX_PUBLIC_KEY;

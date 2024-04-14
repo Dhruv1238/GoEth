@@ -13,12 +13,18 @@ function DriverHome() {
     const [estimatedMaxCost, setEstimatedMaxCost] = useState('156');
     const [bidAmount, setBidAmount] = useState(0);
 
-    const { requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid } = useContext(TransactionContext);
+    const { requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid, bidPlaced,setRequestedRides } = useContext(TransactionContext);
 
     useEffect(() => {
         getAllRideRequests();
     }, [])
 
+    useEffect(() => {
+        if (bidPlaced) {
+            setRequestedRides(requestedRides.slice(1));
+        }
+        getAllRideRequests();
+    }, [bidPlaced])
 
     return (
         <>
@@ -54,10 +60,6 @@ function DriverHome() {
                         </>
                     ))
                     }
-
-
-
-
                 </div>
             </div>
         </>

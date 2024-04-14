@@ -1,13 +1,27 @@
 import { Button } from '@material-tailwind/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Home from './Home'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import authCheck from '../components/AuthCheck';
+import { useContext } from 'react';
+import { TransactionContext } from '../context/TransactionContext';
+import { AuthContext } from '../context/AuthContext'
+import { ethers } from 'ethers';
+
 
 
 function CabBookings() {
+
+    const { requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid, currentAccount } = useContext(TransactionContext);
+
+    const { userData, user } = useContext(AuthContext);
+
+    useEffect(() => {
+        getBids(userData.requestId);
+    }, []);
+
     const [cars, setCars] = useState([
         {
             timeToArrive: '10 mins',
@@ -68,6 +82,58 @@ function CabBookings() {
                             <p className='text-gray-500 leading-tight'>4 Cars Found</p>
                         </div>
                         <div className='flex flex-col p-4 gap-4  h-[72vh] overflow-y-scroll ' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                            {bids.map((bid, index) => (
+                                <div key={index} className='flex flex-col p-4  border-2 border-black rounded-xl gap-2 '>
+                                    <div className='flex flex-row justify-between items-center'>
+                                        <div className='flex flex-row gap-4 items-center'>
+                                            <img src={user.photoUrl} className='w-8 h-8  border-2 border-black rounded-full' alt="" />
+                                            <p className='text-base font-semibold'>Bid:{bid.bidId.toNumber()}</p>
+                                        </div>
+                                        <div className='flex flex-col'>
+                                            <p className='text-xl font-medium'>{(ethers.utils.formatEther(bid.amount) * 268873.65).toFixed(3)} INR</p>
+                                            <p className='text-sm '>{ethers.utils.formatEther(bid.amount)} ETH/-</p>
+                                        </div>
+                                    </div>
+
+                                    {/* <div className='flex flex-row'>
+                                        <div className='flex flex-col '>
+                                            <p className='text-black'>{car.name}</p>
+                                            <div className='flex flex-row text-xs font-medium text-gray-700 gap-2'>
+                                                <p >{car.AC}</p> |
+                                                <p>3 Seats</p> |
+                                                <p>Octane</p> |
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <img src="" alt="" />
+                                        </div>
+                                    </div> */}
+                                    <div className='flex flex-row justify-between items-center'>
+                                        {/* <div className='flex flex-row text-xs gap-2 items-center'>
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                            </svg>
+
+                                            <p className='text-gray-700'>{car.timeToArrive}</p>
+                                            <p className='text-gray-700'>{car.distance}</p>
+                                        </div> */}
+                                        {true ? (
+                                            <div className='text-base text-green-400'>
+                                                <p className='font-bold'>Electric Car</p>
+                                            </div>
+                                        ) : null}
+
+                                    </div>
+                                    <div className="flex flex-row ">
+
+                                        <Button onClick={() => acceptBid(userData.requestId, bid.bidId)} className={`p-4 text-white ${true ? 'bg-green-600' : 'bg-black'} w-full`} >
+                                            Accept Bid
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
                             {cars.map((car, index) => (
                                 <div key={index} className='flex flex-col p-4 border border-2 border-black rounded-xl gap-2 '>
                                     <div className='flex flex-row justify-between items-center'>
@@ -119,9 +185,7 @@ function CabBookings() {
                                     </div>
                                 </div>
                             ))}
-
                         </div>
-
                     </div>
                     <div className='absolute bottom-0 w-full'>
                         <Navbar />

@@ -17,6 +17,8 @@ export const TransactionContextProvider = ({ children }) => {
     const [requestedRides, setRequestedRides] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [bids, setBids] = useState([]);
+    const [bidPlaced, setBidPlaced] = useState(false);
+
 
     const tokenABI = abi.abi;
 
@@ -183,6 +185,7 @@ export const TransactionContextProvider = ({ children }) => {
             const transactionReceipt = await transactionResponse.wait();
 
             console.log('Transaction receipt:', transactionReceipt);
+            setBidPlaced(true);
             setIsLoading(false);
         } catch (error) {
             console.error('Failed to send transaction:', error);
@@ -260,7 +263,7 @@ export const TransactionContextProvider = ({ children }) => {
 
 
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount }}>
             {children}
         </TransactionContext.Provider>
     );
