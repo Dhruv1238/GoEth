@@ -5,7 +5,7 @@ const {PRIVATE_KEY, ESCROW_ADDRESS } = process.env;
 
 async function main() {
   // Get the ContractFactory for the GoEth contract
-  const GoEth = await ethers.getContractFactory("GoEth");
+  const GoEth = await ethers.getContractFactory("GoEthBid");
 
   // Specify the address of the ERC20 token contract and the owner address
   // Replace these with the actual addresses
