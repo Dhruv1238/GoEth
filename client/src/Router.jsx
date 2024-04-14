@@ -14,6 +14,7 @@ import DriverHome from './pages/DriverHome';
 import CabBookings from './pages/CabBookings';
 import UserLive from './pages/UserLive';
 import Completion from './pages/Completion';
+import CompleteRide from './pages/CompleteRide';
 
 const AppRouter = () => {
     return (
@@ -33,7 +34,7 @@ const AppRouter = () => {
             <Route path="/book" element={<CabBookings />} />
             <Route path="/userlive" element={<UserLive />} />
             <Route path="/completion" element={<Completion />} />
-
+            <Route path='/driveComplete' element={<CompleteRide />} />
 
 
         </Routes>

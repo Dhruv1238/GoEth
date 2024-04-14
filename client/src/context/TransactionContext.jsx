@@ -18,7 +18,7 @@ export const TransactionContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [bids, setBids] = useState([]);
     const [bidPlaced, setBidPlaced] = useState(false);
-
+    const [newRideId, setNewRideId] = useState(0);
 
     const tokenABI = abi.abi;
 
@@ -45,6 +45,8 @@ export const TransactionContextProvider = ({ children }) => {
         setProvider(provider);
         setSigner(signer);
     };
+
+   
 
     useEffect(() => {
         // Connect to MetaMask provider
@@ -267,6 +269,8 @@ export const TransactionContextProvider = ({ children }) => {
         try {
             const requestIdBigNumber = ethers.BigNumber.isBigNumber(requestId) ? requestId : ethers.BigNumber.from(requestId);
 
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
             // Send the transaction with an increased gas limit
             const transactionResponse = await contract.completeRide(requestIdBigNumber, {
                 gasLimit: ethers.utils.hexlify(2000000), // Increased to 2,000,000 gas units
@@ -283,9 +287,32 @@ export const TransactionContextProvider = ({ children }) => {
         }
     };
 
+    const getTotalRequestCount = async () => {
+        setIsLoading(true);
+        try {
+            // Call the function to get the total request count
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+            const totalRequestCount = await contract.rideRequestCount();
+
+            setNewRideId(totalRequestCount.toNumber());
+    
+            console.log('Total request count:', totalRequestCount.toNumber());
+            setIsLoading(false);
+    
+            return totalRequestCount.toNumber() + 1;
+        } catch (error) {
+            console.error('Failed to get total request count:', error);
+            setIsLoading(false);
+        }
+    };
+
+    
+
+
 
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount, completeRide }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount, completeRide, getTotalRequestCount }}>
             {children}
         </TransactionContext.Provider>
     );
