@@ -54,7 +54,7 @@ export const TransactionContextProvider = ({ children }) => {
     }
 
     // Function to sign the transaction
-    const requestRide = async (location, destination, startingBidInRupees, amountToApproveInRupees) => {
+    const requestRide = async (location, destination, startingBidInRupees) => {
         setIsLoading(true);
         try {
             // Fetch the current exchange rate from a cryptocurrency exchange API
@@ -62,17 +62,15 @@ export const TransactionContextProvider = ({ children }) => {
 
             // Convert rupees to ether
             const startingBidEther = startingBidInRupees / exchangeRate;
-            const amountToApproveEther = amountToApproveInRupees / exchangeRate;
 
             // Convert ether to wei
-            const startingBidWei = ethers.utils.parseEther(startingBidEther.toString());
-            const amountToApproveWei = ethers.utils.parseEther(amountToApproveEther.toString());
+            const startingBidWei = ethers.utils.parseEther(startingBidEther.toFixed(18));
 
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
             // Send the transaction
-            const transactionResponse = await contract.createRideRequest(location, destination, startingBidWei, amountToApproveWei);
+            const transactionResponse = await contract.createRideRequest(location, destination, startingBidWei);
 
             // Wait for the transaction to be mined
             const transactionReceipt = await transactionResponse.wait();
@@ -85,20 +83,20 @@ export const TransactionContextProvider = ({ children }) => {
         }
     };
 
-    const getRideRequest = async (requestId) => {
+    // const getRideRequest = async (requestId) => {
 
-        try {
-            // Create the contract instance
-            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    //     try {
+    //         // Create the contract instance
+    //         const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-            // Call the rideRequests function
-            const rideRequest = await contract.rideRequests(requestId);
+    //         // Call the rideRequests function
+    //         const rideRequest = await contract.rideRequests(requestId);
 
-            console.log('Ride request:', rideRequest);
-        } catch (error) {
-            console.error('Failed to get ride request:', error);
-        }
-    };
+    //         console.log('Ride request:', rideRequest);
+    //     } catch (error) {
+    //         console.error('Failed to get ride request:', error);
+    //     }
+    // };
 
     //     const getAllRequestIds = async () => {
     //     try {

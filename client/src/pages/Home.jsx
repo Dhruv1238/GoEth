@@ -12,6 +12,9 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import UserLive from './UserLive';
 import React from 'react';
+import { useContext } from 'react';
+import { TransactionContext } from '../context/TransactionContext';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
     const [isTransport, setIsTransport] = useState(true);
@@ -38,6 +41,10 @@ function Home() {
     const [distanceee, setDistanceee] = useState('500')
     const openDrawerRight = () => setOpenRight(true);
     const closeDrawerRight = () => setOpenRight(false);
+
+    const { requestRide } = useContext(TransactionContext);
+
+    const navigate = useNavigate();
 
 
     const API_KEY = import.meta.env.VITE_APP_MAPBOX_ACCESS_KEY;
@@ -226,6 +233,32 @@ function Home() {
     console.log('Source: ', source);
     console.log('Destination: ', destination);
 
+    const handleRequestRide = async () => {
+
+        const sourceDetails = {
+            name: source,
+            lat: sourceLat,
+            lng: sourceLng
+        };
+
+        const destinationDetails = {
+            name: destination,
+            lat: destinationLat,
+            lng: destinationLng
+        };
+
+        // Convert the JSON object to a string
+        const sourceDetailsString = JSON.stringify(sourceDetails);
+        const destinationDetailsString = JSON.stringify(destinationDetails);
+
+        const basePrice = journeyDetails.distance / 1000 * 15;
+        console.log('Base Price: ', basePrice);
+
+        await requestRide(sourceDetailsString, destinationDetailsString, basePrice).then(() => {
+            navigate('/ride');
+        });
+    }
+
     return (
         <>
             <div className='relative z-0 top-0 w-full mx-auto h-full'>
@@ -314,11 +347,17 @@ function Home() {
                             </div>
                             <div className='flex flex-col mb-24 gap-4 pointer-events-auto'>
                                 <div className="flex flex-row justify-between items-center">
-                                    <Link to="/book">
-                                        <Button className='bg-black text-white p-4 pl-6 pr-6 '>
-                                            Book a Cab
-                                        </Button>
-                                    </Link>
+                                    {
+                                        sourceLat && sourceLng && destinationLat && destinationLng ? (
+                                            <Button className='bg-black text-white p-4 pl-6 pr-6' onClick={handleRequestRide}>
+                                                Book a Cab
+                                            </Button>
+                                        ) : (
+                                            <Button variant='ghost' disabled className='text-white p-4 pl-6 pr-6 cursor-not-allowed'>
+                                                Book a Cab
+                                            </Button>
+                                        )
+                                    }
                                     <Button className='bg-black flex items-center justify-center p-4 rounded-lg'>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="m6.115 5.19.319 1.913A6 6 0 0 0 8.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 0 0 2.288-4.042 1.087 1.087 0 0 0-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 0 1-.98-.314l-.295-.295a1.125 1.125 0 0 1 0-1.591l.13-.132a1.125 1.125 0 0 1 1.3-.21l.603.302a.809.809 0 0 0 1.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 0 0 1.528-1.732l.146-.292M6.115 5.19A9 9 0 1 0 17.18 4.64M6.115 5.19A8.965 8.965 0 0 1 12 3c1.929 0 3.716.607 5.18 1.64" />
