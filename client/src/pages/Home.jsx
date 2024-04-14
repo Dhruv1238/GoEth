@@ -16,11 +16,13 @@ import { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { db } from '../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 function Home() {
 
     const navigate = useNavigate();
-    const { requestRide } = useContext(TransactionContext);
+    const { requestRide, currentAccount, getTotalRequestCount } = useContext(TransactionContext);
 
     const { user, userData } = useContext(AuthContext);
 
@@ -30,6 +32,8 @@ function Home() {
     } else {
         console.log('Not navigating');
     }
+
+    const passengerEmail = user.email;
 
     const [isTransport, setIsTransport] = useState(true);
     const [source, setSource] = useState('');
@@ -59,6 +63,8 @@ function Home() {
     const API_KEY = import.meta.env.VITE_APP_MAPBOX_ACCESS_KEY;
     const PUBLIC_KEY = import.meta.env.VITE_APP_MAPBOX_PUBLIC_KEY;
     const SESSION_TOKEN = '025067ec-efa6-47c1-88ed-5edc75f0d552';
+
+    const walletId = currentAccount;
 
     const getAddressList = async (query, setList) => {
         if (!query) return; // Prevents fetching when query is empty
@@ -263,8 +269,22 @@ function Home() {
         const basePrice = journeyDetails.distance / 1000 * 15;
         console.log('Base Price: ', basePrice);
 
-        await requestRide(sourceDetailsString, destinationDetailsString, basePrice).then(() => {
-            navigate('/ride');
+        // await requestRide(sourceDetailsString, destinationDetailsString, basePrice).then(() => {
+        //     navigate('/book');
+        // });
+
+        const requestId = await getTotalRequestCount();
+        console.log('Request ID: ', requestId);
+
+        const userDocRef = doc(db, 'users', user.email);
+        await updateDoc(userDocRef, {
+            hasBooked: true,
+            requestId: requestId
+        }).then(() => {
+            console.log('User details updated successfully');
+            navigate('/book');
+        }).catch((error) => {
+            console.error("Error updating user details: ", error);
         });
     }
 
