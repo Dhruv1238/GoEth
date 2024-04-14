@@ -53,8 +53,6 @@ function Activity() {
                     </div>
                     <div className='flex flex-col gap-5'>
                         <Act />
-                        <Act />
-                        <Act />
 
                     </div>
                 </div>
