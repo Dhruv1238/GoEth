@@ -11,6 +11,7 @@ function DriverHome() {
     const [destination, setDestination] = useState('KJ Somaiya')
     const [estimatedMinCost, setEstimatedMinCost] = useState('156');
     const [estimatedMaxCost, setEstimatedMaxCost] = useState('156');
+    const [bidAmount, setBidAmount] = useState(0);
 
     const { requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid } = useContext(TransactionContext);
 
