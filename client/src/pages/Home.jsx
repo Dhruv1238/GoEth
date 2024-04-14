@@ -269,23 +269,28 @@ function Home() {
         const basePrice = journeyDetails.distance / 1000 * 15;
         console.log('Base Price: ', basePrice);
 
-        // await requestRide(sourceDetailsString, destinationDetailsString, basePrice).then(() => {
-        //     navigate('/book');
-        // });
+        let requestId;
+        try {
+            requestId = await getTotalRequestCount();
+            console.log('Request ID: ', requestId);
+        } catch (error) {
+            console.error('Failed to get total request count:', error);
+        }
 
-        const requestId = await getTotalRequestCount();
-        console.log('Request ID: ', requestId);
+        await requestRide(sourceDetailsString, destinationDetailsString, basePrice).then(async () => {
+            const userDocRef = doc(db, 'users', user.email);
+            await updateDoc(userDocRef, {
+                hasBooked: true,
+                requestId: requestId
+            }).then(() => {
+                console.log('User details updated successfully');
+            }).catch((error) => {
+                console.error("Error updating user details: ", error);
+            });
 
-        const userDocRef = doc(db, 'users', user.email);
-        await updateDoc(userDocRef, {
-            hasBooked: true,
-            requestId: requestId
-        }).then(() => {
-            console.log('User details updated successfully');
             navigate('/book');
-        }).catch((error) => {
-            console.error("Error updating user details: ", error);
         });
+
     }
 
     return (

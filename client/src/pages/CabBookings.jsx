@@ -10,6 +10,10 @@ import { TransactionContext } from '../context/TransactionContext';
 import { AuthContext } from '../context/AuthContext'
 import { ethers } from 'ethers';
 import { useNavigate } from 'react-router-dom'
+import { db } from '../firebase'
+import { doc, updateDoc } from "firebase/firestore";
+
+
 
 
 function CabBookings() {
@@ -22,6 +26,16 @@ function CabBookings() {
 
     const handleAcceptBid = async (requestId, bidId, driver) => {
         await acceptBid(requestId, bidId, driver);
+
+        const userDocRef = doc(db, 'users', user.email);
+        await updateDoc(userDocRef, {
+            hasBooked: false
+        }).then(() => {
+            console.log('User details updated successfully');
+        }).catch((error) => {
+            console.error("Error updating user details: ", error);
+        });
+
         navigate('/userlive');
     }
 

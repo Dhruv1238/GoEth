@@ -302,7 +302,7 @@ export const TransactionContextProvider = ({ children }) => {
             console.log('Total request count:', totalRequestCount.toNumber());
             setIsLoading(false);
 
-            return totalRequestCount.toNumber() + 1;
+            return totalRequestCount.toNumber();
         } catch (error) {
             console.error('Failed to get total request count:', error);
             setIsLoading(false);
