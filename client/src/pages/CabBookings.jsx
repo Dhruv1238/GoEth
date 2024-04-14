@@ -119,7 +119,7 @@ function CabBookings() {
                                             <p className='text-gray-700'>{car.timeToArrive}</p>
                                             <p className='text-gray-700'>{car.distance}</p>
                                         </div> */}
-                                        {true ? (
+                                        {false ? (
                                             <div className='text-base text-green-400'>
                                                 <p className='font-bold'>Electric Car</p>
                                             </div>
@@ -128,7 +128,7 @@ function CabBookings() {
                                     </div>
                                     <div className="flex flex-row ">
 
-                                        <Button onClick={() => acceptBid(userData.requestId, bid.bidId)} className={`p-4 text-white ${true ? 'bg-green-600' : 'bg-black'} w-full`} >
+                                        <Button onClick={() => acceptBid(userData.requestId, bid.bidId)} className={`p-4 text-white ${false ? 'bg-green-600' : 'bg-black'} w-full`} >
                                             Accept Bid
                                         </Button>
                                     </div>

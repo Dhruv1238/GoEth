@@ -262,8 +262,30 @@ export const TransactionContextProvider = ({ children }) => {
     };
 
 
+    const completeRide = async (requestId) => {
+        setIsLoading(true);
+        try {
+            const requestIdBigNumber = ethers.BigNumber.isBigNumber(requestId) ? requestId : ethers.BigNumber.from(requestId);
+
+            // Send the transaction with an increased gas limit
+            const transactionResponse = await contract.completeRide(requestIdBigNumber, {
+                gasLimit: ethers.utils.hexlify(2000000), // Increased to 2,000,000 gas units
+            });
+
+            // Wait for the transaction to be mined
+            const transactionReceipt = await transactionResponse.wait();
+
+            console.log('Transaction receipt:', transactionReceipt);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to send transaction:', error);
+            setIsLoading(false);
+        }
+    };
+
+
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount }}>
+        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount, completeRide }}>
             {children}
         </TransactionContext.Provider>
     );

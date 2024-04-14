@@ -20,8 +20,10 @@ function UserLive() {
 
     return (
         <>
-            <SendLocationButton />
-
+            <div className="flex justify-center flex-col items-center">
+                <Typography color="blueGray" className="text-center text-4xl font-bold">You are on your way to the destination</Typography>
+                <SendLocationButton />
+            </div>
         </>
     )
 }
