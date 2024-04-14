@@ -26,7 +26,7 @@ function Profile() {
     return (
         <>
             <div className='w-[45vh] h-[100vh] bg-white relative'>
-                <div className='flex flex-col  gap-6 overflow-y-scroll' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} >
+                <div className='flex flex-col  gap-6 overflow-y-scroll h-[90vh]' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} >
                     <Link to="/home" className=''>
                         <div className="flex flex-row items-center cursor-pointer pl-8 pt-8 ">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
