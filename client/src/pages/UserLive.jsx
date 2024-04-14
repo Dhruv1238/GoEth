@@ -21,7 +21,8 @@ function UserLive() {
     return (
         <>
             <div className="flex justify-center flex-col items-center">
-                <Typography color="blueGray" className="text-center text-4xl font-bold">You are on your way to the destination</Typography>
+                <Typography color="blueGray" className="text-center text-4xl font-bold p-5">You are on your way to the destination</Typography>
+                <Typography color="blueGray" className="text-center text-3xl font-bold p-5">Share ride details with your loved ones</Typography>
                 <SendLocationButton />
             </div>
         </>

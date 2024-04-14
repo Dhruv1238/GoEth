@@ -62,7 +62,7 @@ const SendLocationButton = () => {
   };
 
   return (
-    <button className='w-16 h-16 rounded-full bg-gray-600 text-white' onClick={sendLocation}>Go</button>
+    <button className='w-20 h-20 rounded-full bg-gray-600 text-white' onClick={sendLocation}>Go</button>
 
   );
 };
