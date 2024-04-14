@@ -8,10 +8,11 @@ function Landing() {
     // Array of image URLs
     const images = ['tt1.svg', 'tt2.svg', 'tt3.svg'];
     const body_texts = [
-        'Sell houses Toughly with the help of Listenoryx and to make this line big I am writing more.',
-        'Sell houses easily with the help of Listenoryx and to make this line big I am writing more.',
-        'Sell houses muchhchchc with the help of Listenoryx and to make this line big I am writing more.'
+        'Reduce your carbon footprint by booking an eco-friendly ride with Listenoryx, anytime and anywhere.',
+        'Choose sustainability by traveling in our eco-conscious vehicles with Listenoryx, whenever you need it.',
+        'Contribute to a greener planet by booking a ride with Listenoryx, wherever you are.'
     ];
+    
     const header_texts = [
         'Anywhere you are',
         'At anytime',
