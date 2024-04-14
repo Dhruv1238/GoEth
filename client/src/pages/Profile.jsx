@@ -9,7 +9,16 @@ import authCheck from '../components/AuthCheck';
 function Profile() {
 
     const { user } = useContext(AuthContext);
+    const handleUpdate = async () => {
+        // Perform asynchronous operations here
+        // For example, making an API call or updating data in a database
 
+        // Simulating an asynchronous operation with setTimeout
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Log "Data Updated" after the asynchronous operation is completed
+        console.log("Data Updated");
+    }
 
     const [userInfo, setUserInfo] = useState({
         name: user != null ? user.displayName : "Please Sign In",
@@ -63,20 +72,21 @@ function Profile() {
                             <p className='font-semibold'>{userInfo.CO2} G</p>
                         </div>
                     </div>
-                    <div className='max-w-2xl mx-auto relative'>
+                    <div className='mx-auto relative'>
                         <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your Address</label>
-                        <div className="flex flex-col gap-2 text-lg">
+                        <div className="flex flex-col gap-8 text-lg">
                             <textarea id="message" cols='40' rows="4" className="block p-2.5 text-sm text-gray-900 w-full rounded-lg border border-black outline-none" placeholder="Your Address..." />
-                            <Button className="bg-black p-4 ">
+                            <Button onClick={handleUpdate} className="bg-black p-4 w-full ">
                                 Update
+                            </Button>
+                            <Button className="bg-black p-4 w-full">
+                                Sign Out
                             </Button>
                         </div>
                     </div>
-                    <div className='flex items-start pl-10'>
-                        <Button className="bg-black p-4 w-1/3">
-                            Sign Out
-                        </Button>
-                    </div>
+                    {/* <div className='flex items-center pl-9 pr-9'>
+                       
+                    </div> */}
                     <div className='mt-12 mb-12 flex items-center justify-center'>
                         <img src="tt3.svg" className='w-70 h-70' alt="" />
                     </div>
