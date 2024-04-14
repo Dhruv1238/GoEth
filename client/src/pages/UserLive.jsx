@@ -24,6 +24,12 @@ function UserLive() {
                 <Typography color="blueGray" className="text-center text-4xl font-bold p-5">You are on your way to the destination</Typography>
                 <Typography color="blueGray" className="text-center text-3xl font-bold p-5">Share ride details with your loved ones</Typography>
                 <SendLocationButton />
+                <Link to="/completion">
+                    <Button variant='outlined' color="black" fullWidth className='my-10' >Rate Your Ride</Button>
+                </Link>
+            </div>
+            <div className="flex justify-center flex-col items-center">
+                
             </div>
         </>
     )

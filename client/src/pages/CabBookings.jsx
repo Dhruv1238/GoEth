@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import { TransactionContext } from '../context/TransactionContext';
 import { AuthContext } from '../context/AuthContext'
 import { ethers } from 'ethers';
-
+import { useNavigate } from 'react-router-dom'
 
 
 function CabBookings() {
@@ -17,6 +17,14 @@ function CabBookings() {
     const { requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, placeBid, getBids, bids, acceptBid, currentAccount } = useContext(TransactionContext);
 
     const { userData, user } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const handleAcceptBid = async (requestId, bidId, driver) => {
+        await acceptBid(requestId, bidId, driver);
+        navigate('/userlive');
+    }
+
 
     useEffect(() => {
         getBids(userData.requestId);
@@ -128,7 +136,7 @@ function CabBookings() {
                                     </div>
                                     <div className="flex flex-row ">
 
-                                        <Button onClick={() => acceptBid(userData.requestId, bid.bidId)} className={`p-4 text-white ${false ? 'bg-green-600' : 'bg-black'} w-full`} >
+                                        <Button onClick={() => handleAcceptBid(userData.requestId, bid.bidId, bid.driver)} className={`p-4 text-white ${false ? 'bg-green-600' : 'bg-black'} w-full`} >
                                             Accept Bid
                                         </Button>
                                     </div>

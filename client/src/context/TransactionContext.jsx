@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
-import { contractABI, contractAddress } from '../utils/constants';
+import { contractABI, contractAddress, cabRatingABI } from '../utils/constants';
 import abi from '../utils/GoEthEscrow.json';
 
 // Create the TransactionContext
@@ -19,6 +19,7 @@ export const TransactionContextProvider = ({ children }) => {
     const [bids, setBids] = useState([]);
     const [bidPlaced, setBidPlaced] = useState(false);
     const [newRideId, setNewRideId] = useState(0);
+    const [driverAddress, setDriverAddress] = useState("");
 
     const tokenABI = abi.abi;
 
@@ -46,7 +47,7 @@ export const TransactionContextProvider = ({ children }) => {
         setSigner(signer);
     };
 
-   
+
 
     useEffect(() => {
         // Connect to MetaMask provider
@@ -231,8 +232,9 @@ export const TransactionContextProvider = ({ children }) => {
         }
     };
 
-    const acceptBid = async (requestId, bidId) => {
+    const acceptBid = async (requestId, bidId, driverAdd) => {
         setIsLoading(true);
+        setDriverAddress(driverAdd);
         try {
             // Create the contract instance
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
@@ -296,10 +298,10 @@ export const TransactionContextProvider = ({ children }) => {
             const totalRequestCount = await contract.rideRequestCount();
 
             setNewRideId(totalRequestCount.toNumber());
-    
+
             console.log('Total request count:', totalRequestCount.toNumber());
             setIsLoading(false);
-    
+
             return totalRequestCount.toNumber() + 1;
         } catch (error) {
             console.error('Failed to get total request count:', error);
@@ -307,12 +309,33 @@ export const TransactionContextProvider = ({ children }) => {
         }
     };
 
-    
+
+    const addRating = async (driver, rating) => {
+        setIsLoading(true);
+        try {
+
+            const contract = new ethers.Contract("0xE3654B3493B6F4442012a440dF13aDD443995A6A", cabRatingABI, signer);
+            // Send the transaction with an increased gas limit
+            const transactionResponse = await contract.addRating(driver, rating, {
+                gasLimit: ethers.utils.hexlify(2000000), // Increased to 2,000,000 gas units
+            });
+
+            // Wait for the transaction to be mined
+            const transactionReceipt = await transactionResponse.wait();
+
+            console.log('Transaction receipt:', transactionReceipt);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Failed to send transaction:', error);
+            setIsLoading(false);
+        }
+    };
+
 
 
 
     return (
-        <TransactionContext.Provider value={{ requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount, completeRide, getTotalRequestCount }}>
+        <TransactionContext.Provider value={{addRating, requestRide, connectWallet, getAllRideRequests, isLoading, requestedRides, setRequestedRides, placeBid, getBids, bids, acceptBid, bidPlaced, currentAccount, completeRide, getTotalRequestCount, driverAddress }}>
             {children}
         </TransactionContext.Provider>
     );

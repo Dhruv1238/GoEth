@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useContext } from 'react';
+import { TransactionContext } from '../context/TransactionContext';
+import { Button } from '@material-tailwind/react';
 
 function Completion() {
     const [userName, setUserName] = useState('');
     const [starRating, setStarRating] = useState(0); // Step 1: Add state for star rating
+
+    const {addRating, driverAddress}=useContext(TransactionContext);
 
     // Step 2: Create Star Rating Component
     const StarRating = ({ rating, setRating }) => {
@@ -50,9 +55,10 @@ function Completion() {
                         <h1 className='text-2xl font-bold'>Please rate your experience</h1>
                     </div>
                 </div>
-                <div className='flex justify-center'>
+                <div className='flex justify-center gap-5'>
                     {/* Render Star Rating Component */}
                     <StarRating rating={starRating} setRating={setStarRating} />
+                    <Button onClick={()=>addRating(driverAddress, starRating)}>Submit</Button>
                 </div>
                 <div className='absolute z-10 bottom-0 w-full'>
                     <Navbar />
